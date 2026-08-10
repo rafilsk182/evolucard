@@ -148,8 +148,28 @@
 </div>
 </sc-if>
 
+<sc-if value="{{ is_bioFacial }}">
+<div data-screen-label="03B Biometria facial" style="min-height:100%;background:#fff;padding:40px 16px 32px;display:flex;flex-direction:column;align-items:center">
+<div style="position:relative;width:104px;height:104px;margin-top:32px">
+<div style="width:104px;height:104px;border-radius:50%;background:#F5F6F8;border:1.5px solid #D7DBE0;display:flex;align-items:center;justify-content:center"><svg width="52" height="52" viewBox="0 0 40 40" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="28" height="28" rx="10"></rect><circle cx="15" cy="18" r="1.6" fill="#0B2545" stroke="none"></circle><circle cx="25" cy="18" r="1.6" fill="#0B2545" stroke="none"></circle><path d="M14 25c1.8 2 3.8 3 6 3s4.2-1 6-3"></path></svg></div>
+<span style="position:absolute;top:-4px;left:-4px;width:22px;height:22px;border-top:2.5px solid #17A2B8;border-left:2.5px solid #17A2B8;border-radius:8px 0 0 0"></span>
+<span style="position:absolute;top:-4px;right:-4px;width:22px;height:22px;border-top:2.5px solid #17A2B8;border-right:2.5px solid #17A2B8;border-radius:0 8px 0 0"></span>
+<span style="position:absolute;bottom:-4px;left:-4px;width:22px;height:22px;border-bottom:2.5px solid #17A2B8;border-left:2.5px solid #17A2B8;border-radius:0 0 0 8px"></span>
+<span style="position:absolute;bottom:-4px;right:-4px;width:22px;height:22px;border-bottom:2.5px solid #17A2B8;border-right:2.5px solid #17A2B8;border-radius:0 0 8px 0"></span>
+</div>
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:32px 0 8px;text-align:center">Confirme que é você com biometria facial.</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0;text-align:center;text-wrap:pretty">Antes de continuar, pedimos um reconhecimento facial rápido para reforçar a segurança da sua conta e dos seus dados. Essa etapa vale tanto no primeiro acesso quanto nos próximos logins.</p>
+<div style="flex:1;min-height:32px"></div>
+<div style="display:flex;gap:8px;align-items:flex-start;background:#F5F6F8;border-radius:12px;padding:12px 14px;width:100%">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M9 2 15 4.2v4.3c0 3.4-2.4 6.3-6 7.5-3.6-1.2-6-4.1-6-7.5V4.2L9 2Z"></path></svg>
+<span style="font:400 13px/1.45 Inter;color:#4A5160">Sua imagem é usada só para essa verificação e não fica armazenada.</span>
+</div>
+<button onClick="{{ go.bio }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Concluir verificação facial</button>
+</div>
+</sc-if>
+
 <sc-if value="{{ is_bio }}">
-<div data-screen-label="04 Biometria" style="min-height:100%;background:#fff;padding:40px 16px 32px;display:flex;flex-direction:column;align-items:center">
+<div data-screen-label="04 Biometria do aparelho" style="min-height:100%;background:#fff;padding:40px 16px 32px;display:flex;flex-direction:column;align-items:center">
 <div style="width:104px;height:104px;border-radius:50%;background:#F5F6F8;border:1.5px solid #D7DBE0;display:flex;align-items:center;justify-content:center;margin-top:32px"><svg width="52" height="52" viewBox="0 0 40 40" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><circle cx="20" cy="20" r="4"></circle><circle cx="20" cy="20" r="9"></circle><circle cx="20" cy="20" r="14"></circle></svg></div>
 <h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:32px 0 8px;text-align:center">Entre mais rápido usando a biometria do seu celular.</h1>
 <p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0;text-align:center;text-wrap:pretty">Você também usa a biometria para confirmar compras e antecipações. Pode desligar quando quiser nas configurações.</p>
@@ -1221,7 +1241,8 @@ const META = {
   splash: {h: 'none'},
   login: {h: 'none'},
   otp: {h: 'std', t: 'Código de acesso', b: 'login'},
-  bio: {h: 'std', t: 'Biometria', b: 'otp'},
+  bioFacial: {h: 'std', t: 'Biometria facial', b: 'otp'},
+  bio: {h: 'std', t: 'Biometria do aparelho', b: 'bioFacial'},
   home: {h: 'home', nav: 'inicio'},
   composicao: {h: 'std', t: 'Composição do limite', b: 'home'},
   receb: {h: 'std', t: 'Recebíveis', nav: 'receb', b: 'home'},
@@ -1325,7 +1346,7 @@ class Component extends DCLogic {
 
   digito = d => this.setState(s => {
     const o = (s.otp + d).slice(0, 6);
-    if (o.length === 6) { setTimeout(() => this.ir('bio', {otp: ''}), 320); }
+    if (o.length === 6) { setTimeout(() => this.ir('bioFacial', {otp: ''}), 320); }
     return {otp: o, otpErro: ''};
   });
   apagar = () => this.setState(s => ({otp: s.otp.slice(0, -1), otpErro: ''}));
