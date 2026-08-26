@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Evoluservices — EvoluCard V2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<div id="ev-lock" style="position:fixed;inset:0;z-index:9999;background:#0B2545;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Inter,system-ui,sans-serif">
+<div style="width:100%;max-width:320px;text-align:center">
+<img src="uploads/evoluservices-branco.png" alt="Evoluservices" style="width:172px;height:auto;margin:0 auto 40px;display:block">
+<label for="ev-lock-input" style="display:block;font:600 12px/1.2 Inter,sans-serif;letter-spacing:.04em;color:#A9BACE;margin-bottom:8px;text-align:left">SENHA DE ACESSO</label>
+<input id="ev-lock-input" type="password" autocomplete="off" placeholder="Digite a senha" style="width:100%;height:48px;border-radius:8px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);padding:0 14px;font:400 15px Inter,sans-serif;color:#fff;box-sizing:border-box;outline:none">
+<div id="ev-lock-err" style="display:none;margin-top:10px;font:400 13px/1.4 Inter,sans-serif;color:#F2A79E;text-align:left">Senha incorreta. Tente novamente.</div>
+<button id="ev-lock-btn" style="width:100%;height:48px;margin-top:20px;border-radius:8px;border:0;background:#17A2B8;color:#0B2545;font:600 15px Inter,sans-serif;cursor:pointer">Entrar</button>
+</div>
+</div>
+<script>
+(function () {
+  var PASS = "evolucard";
+  var overlay = document.getElementById("ev-lock");
+  var input = document.getElementById("ev-lock-input");
+  var btn = document.getElementById("ev-lock-btn");
+  var err = document.getElementById("ev-lock-err");
+  function unlock() {
+    overlay.style.display = "none";
+    try { sessionStorage.setItem("ev-unlocked", "1"); } catch (e) {}
+  }
+  function tryUnlock() {
+    if (input.value === PASS) { unlock(); }
+    else { err.style.display = "block"; input.value = ""; input.focus(); }
+  }
+  btn.addEventListener("click", tryUnlock);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+  try {
+    if (sessionStorage.getItem("ev-unlocked") === "1") { overlay.style.display = "none"; }
+    else { input.focus(); }
+  } catch (e) { input.focus(); }
+})();
+</script>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>*{box-sizing:border-box}body{margin:0;background:#EEF0F3;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#0B2545;text-decoration:none}a:hover{color:#143A63}button{font-family:inherit}@keyframes evpulse{0%,100%{opacity:.35}50%{opacity:1}}@keyframes evup{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}@keyframes evsheet{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes evfade{from{opacity:0}to{opacity:1}}@keyframes evshine{0%{background-position:-240px 0}100%{background-position:240px 0}}#ev-scroll{overscroll-behavior:contain}@media (max-width:520px){html{height:100%;overflow:hidden}body{position:fixed;inset:0;width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}#ev-page{padding:0!important;min-height:100vh!important;min-height:100dvh!important;height:100vh!important;height:100dvh!important;background:#14181F!important}#ev-bezel{width:100%!important;max-width:100%!important;height:100%!important;padding:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}#ev-screen{width:100%!important;height:100vh!important;height:100dvh!important;border-radius:0!important}#ev-statusbar{display:none!important}#ev-statusbar-bg{display:none!important}}</style></helmet>
+<div id="ev-page" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#EEF0F3;padding:24px">
+<div id="ev-bezel" style="width:414px;padding:12px;border-radius:44px;background:#14181F;box-shadow:0 24px 60px rgba(11,37,69,.28)">
+<div id="ev-screen" style="position:relative;width:390px;height:844px;border-radius:34px;overflow:hidden;background:#F5F6F8;display:flex;flex-direction:column">
+<div id="ev-statusbar" style="position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:30;pointer-events:none">
+<span style="font:600 13px/1 Inter;color:{{ barColor }}">09:41</span>
+<div style="display:flex;align-items:center;gap:5px"><span style="width:16px;height:9px;border-radius:2px;border:1.5px solid {{ barColor }};opacity:.9"></span><span style="width:16px;height:9px;border-radius:2px;background:{{ barColor }};opacity:.9"></span><span style="width:22px;height:10px;border-radius:3px;border:1.5px solid {{ barColor }};opacity:.9"></span></div>
+</div>
+<sc-if value="{{ headerHome }}">
+<div id="ev-statusbar-bg" style="position:absolute;top:0;left:0;right:0;height:44px;background:#0B2545;z-index:25"></div>
+</sc-if>
+<sc-if value="{{ headerStd }}">
+<div style="background:#0B2545;padding:52px 16px 16px;flex:none;display:flex;align-items:center;gap:8px">
+<button onClick="{{ voltar }}" aria-label="Voltar" style="width:40px;height:40px;margin-left:-8px;border-radius:10px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:rgba(255,255,255,.12)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-6 6 6 6"></path></svg></button>
+<div style="font:600 17px/1.3 Inter;color:#fff">{{ titulo }}</div>
+</div>
+</sc-if>
+<div id="ev-scroll" style="flex:1;overflow-y:auto;overflow-x:hidden;position:relative">
+
+<sc-if value="{{ headerHome }}">
+<div style="background:#0B2545;padding:56px 16px 60px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+<div><div style="font:400 13px/1.3 Inter;color:#A9BACE">Olá, Marina</div><div style="font:700 22px/1.25 Inter;color:#fff;margin-top:2px">Clínica Horizonte</div></div>
+<button onClick="{{ go.seguranca }}" aria-label="Perfil" style="width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);cursor:pointer;font:600 15px Inter;color:#fff" style-hover="background:rgba(255,255,255,.14)">M</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_splash }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="01 Splash" style="min-height:100%;background:#0B2545;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px">
+<img src="uploads/evoluservices-branco.png" alt="Evoluservices" style="display:block;width:236px;height:auto">
+<div style="font:600 15px/1.4 Inter;color:#fff;margin-top:18px;letter-spacing:.02em">EvoluCard</div>
+<div style="font:400 13px/1.4 Inter;color:#A9BACE;margin-top:4px">Cartão empresarial com limite formado pelas suas vendas</div>
+<div style="display:flex;gap:6px;margin-top:56px"><span style="width:7px;height:7px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out infinite"></span><span style="width:7px;height:7px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out .18s infinite"></span><span style="width:7px;height:7px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out .36s infinite"></span></div>
+<div style="position:absolute;bottom:32px;left:0;right:0;text-align:center;font:400 12px/1.4 Inter;color:#5F7893">Protótipo V2, dados fictícios</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_login }}">
+<div data-screen-label="02 Login" style="min-height:100%;background:#fff;padding:72px 16px 32px;display:flex;flex-direction:column">
+<img src="uploads/evoluservices.png" alt="Evoluservices" style="display:block;width:172px;height:auto;margin-bottom:32px">
+<h1 style="font:700 28px/1.25 Inter;color:#14181F;margin:0 0 8px;text-wrap:pretty">Entre para ver seu limite e usar seu EvoluCard.</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 32px">O cartão empresarial da sua empresa em um só lugar.</p>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div><label for="v2lg1" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">CNPJ OU E-MAIL</label><input id="v2lg1" defaultValue="12.345.678/0001-90" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F;background:#fff" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2lg2" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">SENHA</label><div style="position:relative"><input id="v2lg2" type="password" defaultValue="123456789" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 48px 0 14px;font:400 15px Inter;color:#14181F;background:#fff" style-focus="border-color:#0B2545;outline:none"><span style="position:absolute;right:14px;top:15px;font:600 12px Inter;color:#0B2545">VER</span></div></div>
+</div>
+<button onClick="{{ go.otp }}" style="width:100%;height:48px;margin-top:24px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Entrar</button>
+<div style="height:1px;background:#D7DBE0;margin:24px 0"></div>
+<button onClick="{{ go.obEmpresa }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="background:#F5F6F8">Primeiro acesso, abrir minha conta</button>
+<div style="flex:1;min-height:24px"></div>
+<div style="display:flex;gap:8px;align-items:flex-start;background:#F5F6F8;border-radius:12px;padding:12px 14px">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M9 2 15 4.2v4.3c0 3.4-2.4 6.3-6 7.5-3.6-1.2-6-4.1-6-7.5V4.2L9 2Z"></path></svg>
+<span style="font:400 13px/1.45 Inter;color:#4A5160">Seus dados são protegidos e o acesso é confirmado em duas etapas.</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_otp }}">
+<div data-screen-label="03 Código de acesso" style="min-height:100%;background:#fff;padding:32px 16px">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 8px">Enviamos um código para o celular terminado em 4821.</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 32px">Digite os seis números que você recebeu por SMS.</p>
+<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">
+<sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="6">
+<div style="height:56px;border-radius:8px;border:1.5px solid #D7DBE0;background:#F5F6F8;display:flex;align-items:center;justify-content:center;font:700 22px Inter;color:#14181F">{{ b.ch }}</div>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:32px">
+<sc-for list="{{ teclas }}" as="k" hint-placeholder-count="12">
+<button onClick="{{ k.fn }}" style="height:56px;border-radius:12px;border:1px solid #D7DBE0;background:#fff;font:600 22px Inter;color:#14181F;cursor:pointer" style-hover="background:#F5F6F8">{{ k.d }}</button>
+</sc-for>
+</div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;text-align:center;margin-top:20px">Não recebeu? Podemos enviar de novo em 42 segundos.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obEmpresa }}">
+<div data-screen-label="04 Onboarding, empresa" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span></div>
+<div style="font:400 13px/1.4 Inter;color:#4A5160;margin-bottom:12px">Etapa 1 de 5</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:700 22px/1.3 Inter;color:#14181F">Vamos começar pela sua empresa</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Encontramos o seu CNPJ nos nossos cadastros, então já preenchemos o que sabemos. Confira se está tudo certo.</p>
+<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;background:#EAF5EF;margin-top:14px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#166B44" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg><span style="font:600 12px/1 Inter;color:#166B44">Cliente Evoluservices</span></div>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div><label for="v2o1" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">CNPJ</label><input id="v2o1" defaultValue="12.345.678/0001-90" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F;background:#F5F6F8" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2o2" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">RAZÃO SOCIAL</label><input id="v2o2" defaultValue="Clínica Horizonte Ltda." style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F;background:#F5F6F8" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2o3" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">NOME FANTASIA</label><input id="v2o3" defaultValue="Clínica Horizonte" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F" style-focus="border-color:#0B2545;outline:none"></div>
+</div>
+</div>
+<button onClick="{{ go.obResponsavel }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obResponsavel }}">
+<div data-screen-label="05 Onboarding, responsável" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span></div>
+<div style="font:400 13px/1.4 Inter;color:#4A5160;margin-bottom:12px">Etapa 2 de 5</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:700 22px/1.3 Inter;color:#14181F">Quem responde pela empresa?</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Precisamos dos dados de quem tem poderes para contratar em nome da Clínica Horizonte.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div><label for="v2r1" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">NOME COMPLETO</label><input id="v2r1" defaultValue="Marina Alcântara" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2r2" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">CPF</label><input id="v2r2" defaultValue="123.456.789-01" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2r3" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">VÍNCULO COM A EMPRESA</label><div id="v2r3" style="height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#14181F">Sócia administradora</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8l4 4 4-4"></path></svg></div></div>
+<div><label for="v2r4" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">TELEFONE</label><input id="v2r4" defaultValue="(11) 99999-4821" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F" style-focus="border-color:#0B2545;outline:none"></div>
+<div><label for="v2r5" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">E-MAIL</label><input id="v2r5" defaultValue="marina@clinicahorizonte.com.br" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px;font:400 15px Inter;color:#14181F" style-focus="border-color:#0B2545;outline:none"></div>
+</div>
+</div>
+<button onClick="{{ go.obDocumentos }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obDocumentos }}">
+<div data-screen-label="06 Onboarding, documentos" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span></div>
+<div style="font:400 13px/1.4 Inter;color:#4A5160;margin-bottom:12px">Etapa 3 de 5</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:700 22px/1.3 Inter;color:#14181F">Só os documentos necessários</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Pedimos apenas o que precisamos para emitir o seu cartão. Nada além disso.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;margin-top:12px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #F5F6F8;padding:14px 16px;min-height:64px"><span style="width:36px;height:36px;border-radius:10px;background:#EAF5EF;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10.5l3.2 3.2L15 7"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">Cartão CNPJ</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Já temos no seu cadastro</span></span></div>
+<button style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:64px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M10 13V4M6.5 7.5 10 4l3.5 3.5"></path><path d="M4 14v2h12v-2"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">Documento de identidade</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">RG ou CNH da responsável</span></span><span style="font:600 13px Inter;color:#0B2545">Enviar</span></button>
+<button style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:64px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M10 13V4M6.5 7.5 10 4l3.5 3.5"></path><path d="M4 14v2h12v-2"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">Contrato social</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Última alteração consolidada</span></span><span style="font:600 13px Inter;color:#0B2545">Enviar</span></button>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;gap:10px">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M10 2.5 16.5 5v4.8c0 3.8-2.6 7-6.5 8.2-3.9-1.2-6.5-4.4-6.5-8.2V5L10 2.5Z"></path></svg>
+<div style="font:400 13px/1.5 Inter;color:#4A5160">Seus documentos são usados apenas para abrir e manter a sua conta, conforme exigido pela regulação.</div>
+</div>
+<button onClick="{{ go.obBiometria }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obBiometria }}">
+<div data-screen-label="07 Onboarding, biometria" style="min-height:100%;background:#fff;padding:16px 16px 32px;display:flex;flex-direction:column">
+<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#D7DBE0"></span></div>
+<div style="font:400 13px/1.4 Inter;color:#4A5160;margin-bottom:20px">Etapa 4 de 5</div>
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 8px">Precisamos confirmar que é você</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 24px;text-wrap:pretty">Vamos tirar uma foto do seu rosto para comparar com o seu documento. Leva menos de um minuto.</p>
+<div style="align-self:center;position:relative;width:220px;height:280px;border-radius:110px 110px 100px 100px;background:#F5F6F8;border:2px dashed #D7DBE0;display:flex;align-items:center;justify-content:center">
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" stroke="#B9C2CC" stroke-width="2" stroke-linecap="round"><circle cx="48" cy="36" r="17"></circle><path d="M20 84c4-15 15-22 28-22s24 7 28 22"></path></svg>
+<span style="position:absolute;top:-2px;left:22px;width:36px;height:36px;border-top:3px solid #17A2B8;border-left:3px solid #17A2B8;border-radius:18px 0 0 0"></span>
+<span style="position:absolute;top:-2px;right:22px;width:36px;height:36px;border-top:3px solid #17A2B8;border-right:3px solid #17A2B8;border-radius:0 18px 0 0"></span>
+<span style="position:absolute;bottom:-2px;left:14px;width:36px;height:36px;border-bottom:3px solid #17A2B8;border-left:3px solid #17A2B8;border-radius:0 0 0 18px"></span>
+<span style="position:absolute;bottom:-2px;right:14px;width:36px;height:36px;border-bottom:3px solid #17A2B8;border-right:3px solid #17A2B8;border-radius:0 0 18px 0"></span>
+</div>
+<div style="background:#F5F6F8;border-radius:12px;padding:14px 16px;margin-top:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;gap:8px;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.8" stroke-linecap="round" style="flex:none"><path d="M5 10.5l3.2 3.2L15 7"></path></svg><span style="font:400 13px/1.4 Inter;color:#4A5160">Fique em um lugar bem iluminado</span></div>
+<div style="display:flex;gap:8px;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.8" stroke-linecap="round" style="flex:none"><path d="M5 10.5l3.2 3.2L15 7"></path></svg><span style="font:400 13px/1.4 Inter;color:#4A5160">Tire óculos escuros, boné ou máscara</span></div>
+<div style="display:flex;gap:8px;align-items:center"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.8" stroke-linecap="round" style="flex:none"><path d="M5 10.5l3.2 3.2L15 7"></path></svg><span style="font:400 13px/1.4 Inter;color:#4A5160">Encaixe o rosto dentro da moldura</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ go.obConsentimento }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer">Tirar foto agora</button>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;text-align:center;margin-top:12px">A imagem é usada apenas para confirmar a sua identidade.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obConsentimento }}">
+<div data-screen-label="08 Onboarding, consentimento" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<div style="display:flex;gap:6px;align-items:center;margin-bottom:12px"><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span><span style="flex:1;height:4px;border-radius:2px;background:#0B2545"></span></div>
+<div style="font:400 13px/1.4 Inter;color:#4A5160;margin-bottom:12px">Etapa 5 de 5</div>
+<div style="display:inline-flex;align-self:flex-start;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;background:#EAF5EF;margin-bottom:12px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#166B44" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg><span style="font:600 12px/1 Inter;color:#166B44">Identidade confirmada</span></div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:700 22px/1.3 Inter;color:#14181F">Seus recebíveis ajudam a definir seu limite</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Para calcular seu limite EvoluCard, precisamos consultar os valores que sua empresa tem a receber.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;margin-top:12px;overflow:hidden">
+<div style="display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #F5F6F8"><span style="width:32px;height:32px;border-radius:8px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M4 15V8M10 15V5M16 15v-4"></path></svg></span><div style="font:400 13px/1.5 Inter;color:#4A5160">A consulta serve apenas para calcular e manter o seu limite. Nenhum valor sai da sua conta por causa dela.</div></div>
+<div style="display:flex;gap:12px;padding:14px 16px"><span style="width:32px;height:32px;border-radius:8px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5 16.5 5v4.8c0 3.8-2.6 7-6.5 8.2-3.9-1.2-6.5-4.4-6.5-8.2V5L10 2.5Z"></path></svg></span><div style="font:400 13px/1.5 Inter;color:#4A5160">Você pode revisar essa autorização depois, dentro do app.</div></div>
+</div>
+<button onClick="{{ toggleConsent }}" style="display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:#fff;border:1.5px solid {{ consentBorda }};border-radius:12px;padding:16px;margin-top:12px;cursor:pointer" style-hover="border-color:#0B2545">
+<span style="width:24px;height:24px;border-radius:6px;border:1.5px solid {{ consentBorda }};background:{{ consentFundo }};flex:none;display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="{{ consentTick }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.4 5.8 10 11 4"></path></svg></span>
+<span style="font:400 15px/1.5 Inter;color:#14181F">Autorizo a Evoluservices a consultar minha agenda de recebíveis para cálculo e gestão do limite EvoluCard.</span>
+</button>
+<div style="flex:1;min-height:20px"></div>
+<sc-if value="{{ consentOk }}">
+<button onClick="{{ irObAnalise }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Continuar</button>
+</sc-if>
+<sc-if value="{{ consentFalta }}">
+<div style="width:100%;height:48px;margin-top:16px;border-radius:8px;background:#E7EAEE;color:#8A929E;font:600 15px Inter;display:flex;align-items:center;justify-content:center">Continuar</div>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;text-align:center;margin-top:8px">Marque a autorização acima para seguir.</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obAnalise }}">
+<div data-screen-label="09 Onboarding, análise" style="min-height:100%;background:#0B2545;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 32px">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out .18s infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:#17A2B8;animation:evpulse 1.1s ease-in-out .36s infinite"></span></div>
+<h1 style="font:700 22px/1.3 Inter;color:#fff;margin:28px 0 8px;text-align:center">Estamos analisando seus dados</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-align:center;text-wrap:pretty">Costuma levar menos de um minuto. Você pode fechar o app, avisamos por notificação quando terminar.</p>
+<div style="position:absolute;bottom:32px;left:16px;right:16px;display:flex;gap:6px;justify-content:center">
+<button onClick="{{ cen.obAprovado }}" style="height:34px;padding:0 10px;border-radius:8px;border:1px dashed rgba(255,255,255,.3);background:transparent;font:600 12px Inter;color:#A9BACE;cursor:pointer">POC: aprovado</button>
+<button onClick="{{ cen.obPendente }}" style="height:34px;padding:0 10px;border-radius:8px;border:1px dashed rgba(255,255,255,.3);background:transparent;font:600 12px Inter;color:#A9BACE;cursor:pointer">pendente</button>
+<button onClick="{{ cen.obAnaliseRes }}" style="height:34px;padding:0 10px;border-radius:8px;border:1px dashed rgba(255,255,255,.3);background:transparent;font:600 12px Inter;color:#A9BACE;cursor:pointer">em análise</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obResultado }}">
+<div data-screen-label="10 Onboarding, resultado" style="min-height:100%;background:#0B2545;padding:72px 16px 24px;display:flex;flex-direction:column">
+<sc-if value="{{ obAprovado }}">
+<div style="width:64px;height:64px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4 4L19 7"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:24px 0 8px">Cadastro aprovado.</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-wrap:pretty">Consultamos os valores que sua empresa tem a receber e já calculamos o seu limite EvoluCard.</p>
+<div style="flex:1;min-height:24px"></div>
+<button onClick="{{ go.obPronto }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Ver meu limite e meu cartão</button>
+</sc-if>
+<sc-if value="{{ obPendente }}">
+<div style="width:64px;height:64px;border-radius:12px;background:#E0A106;display:flex;align-items:center;justify-content:center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14181F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v6M12 16.6h.01"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:24px 0 8px">Precisamos de mais informações</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-wrap:pretty">Faltou pouco. Confira os itens abaixo e envie o que estiver pendente para seguirmos com a análise.</p>
+<div style="background:#fff;border-radius:12px;padding:16px;margin-top:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:10px;align-items:flex-start"><span style="width:8px;height:8px;border-radius:50%;background:#E0A106;flex:none;margin-top:6px"></span><div><div style="font:600 15px/1.35 Inter;color:#14181F">Contrato social ilegível</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Envie de novo com todas as páginas visíveis</div></div></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;gap:10px;align-items:flex-start"><span style="width:8px;height:8px;border-radius:50%;background:#E0A106;flex:none;margin-top:6px"></span><div><div style="font:600 15px/1.35 Inter;color:#14181F">Foto não pôde ser comparada</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Tente novamente em um lugar mais iluminado</div></div></div>
+</div>
+</div>
+<div style="flex:1;min-height:24px"></div>
+<button onClick="{{ go.obDocumentos }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Enviar o que falta</button>
+<button onClick="{{ go.suporte }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:rgba(255,255,255,.1)">Falar com atendimento</button>
+</sc-if>
+<sc-if value="{{ obEmAnalise }}">
+<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.8V12l3 2"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:24px 0 8px">Cadastro em análise</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-wrap:pretty">Recebemos tudo. Uma parte da conferência é feita por uma pessoa da nossa equipe, e isso pode levar até um dia útil.</p>
+<div style="background:#fff;border-radius:12px;padding:16px;margin-top:24px">
+<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Protocolo</span><span style="font:600 15px Inter;color:#14181F">CD-2026-0803-77</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font:400 15px Inter;color:#4A5160">Previsão</span><span style="font:600 15px Inter;color:#14181F">Até 4 de agosto</span></div>
+<div style="height:1px;background:#F5F6F8;margin:12px 0"></div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160">Avisamos por notificação e por e-mail assim que terminar. Você não precisa fazer mais nada agora.</div>
+</div>
+<div style="flex:1;min-height:24px"></div>
+<button onClick="{{ go.limite }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Entrar no app</button>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_obPronto }}">
+<div data-screen-label="11 Primeiro acesso" style="min-height:100%;background:#0B2545;padding:72px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:0 0 8px">Seu EvoluCard está pronto</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-wrap:pretty">Você não precisa esperar o cartão físico para começar a usar seu EvoluCard.</p>
+<div style="background:#fff;border-radius:12px;padding:16px;margin-top:24px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">SEU LIMITE INICIAL</div>
+<div style="font:700 34px/1.15 Inter;color:#0B2545;margin:6px 0 4px;letter-spacing:-.02em">{{ disponivel }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160">Calculado a partir dos recebíveis elegíveis da sua empresa.</div>
+</div>
+<div style="border-radius:12px;background:#143A63;padding:18px 16px;margin-top:12px;position:relative;overflow:hidden">
+<div style="position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(23,162,184,.18)"></div>
+<div style="position:relative;display:flex;align-items:center;gap:14px">
+<div style="width:56px;height:36px;border-radius:6px;background:#0B2545;flex:none;position:relative"><span style="position:absolute;left:6px;bottom:6px;width:12px;height:9px;border-radius:2px;background:#17A2B8"></span></div>
+<div><div style="font:600 15px/1.3 Inter;color:#fff">Seu cartão virtual já está disponível</div><div style="font:400 13px/1.4 Inter;color:#A9BACE;margin-top:2px">EvoluCard 5432 · pronto para usar</div></div>
+</div>
+</div>
+<div style="flex:1;min-height:24px"></div>
+<button onClick="{{ go.cartao }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Ver meu cartão virtual</button>
+<sc-if value="{{ mostrarWallet }}">
+<button onClick="{{ addWallet }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:rgba(255,255,255,.1)">Adicionar à carteira digital</button>
+</sc-if>
+<button onClick="{{ go.limite }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:0;background:transparent;color:#A9BACE;font:600 15px Inter;cursor:pointer" style-hover="color:#fff">Ir para o meu limite</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_limite }}">
+<div data-screen-label="12 Limite" style="min-height:100%;background:#F5F6F8;padding:0 16px 24px">
+
+<sc-if value="{{ aumentou }}">
+<div style="margin-top:-44px;background:#E6F4F7;border:1px solid #A8DCE4;border-radius:12px;padding:14px 16px;display:flex;gap:10px;margin-bottom:12px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0E6B79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M4 13.5 8.5 9l3 3L16 7"></path><path d="M12.5 7H16v3.5"></path></svg><div><div style="font:600 15px/1.35 Inter;color:#14181F">Seu limite aumentou</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Novas vendas foram consideradas no cálculo do seu EvoluCard.</div></div></div>
+</sc-if>
+
+<div style="background:#fff;border-radius:12px;padding:20px 16px;box-shadow:0 6px 20px rgba(11,37,69,.10);border:1px solid #E4E8ED;margin-top:{{ cardTopo }}">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">LIMITE DISPONÍVEL</div>
+<div style="font:700 34px/1.15 Inter;color:#0B2545;margin:8px 0 6px;letter-spacing:-.02em">{{ disponivel }}</div>
+<p style="font:400 13px/1.45 Inter;color:#4A5160;margin:0">Calculado a partir dos recebíveis elegíveis da sua empresa.</p>
+<div style="display:flex;align-items:center;gap:6px;margin-top:10px"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5"></circle><path d="M7 4.4V7l1.8 1.2"></path></svg><span style="font:400 12px/1.3 Inter;color:#4A5160">Atualizado hoje às 09:12</span></div>
+
+<div style="height:1px;background:#F5F6F8;margin:16px 0 14px"></div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px/1.3 Inter;color:#4A5160">Disponível</span><span style="font:600 15px/1.3 Inter;color:#14181F">{{ disponivel }}</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px/1.3 Inter;color:#4A5160">Utilizado</span><span style="font:600 15px/1.3 Inter;color:#14181F">R$ 6.200,00</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px/1.3 Inter;color:#4A5160">Limite máximo</span><span style="font:600 15px/1.3 Inter;color:#14181F">Até {{ maximo }}</span></div>
+</div>
+<button onClick="{{ go.limiteAjustar }}" style="width:100%;height:44px;margin-top:16px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="background:#F5F6F8">Ajustar meu limite</button>
+<div style="font:400 12px/1.4 Inter;color:#4A5160;text-align:center;margin-top:8px">Preferência atual: {{ prefTxt }}</div>
+</div>
+
+<div style="margin-top:12px;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div style="font:600 17px/1.3 Inter;color:#14181F">Últimas transações</div><button onClick="{{ go.transacoes }}" style="border:0;background:transparent;font:600 13px Inter;color:#0B2545;cursor:pointer;padding:4px">Ver todas</button></div>
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ ultimas }}" as="t" hint-placeholder-count="3">
+<button onClick="{{ t.abrir }}" style="display:flex;align-items:center;gap:12px;width:100%;border:0;border-top:1px solid #F5F6F8;background:#fff;padding:14px 0;cursor:pointer;text-align:left" style-hover="background:#FAFBFC">
+<span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="14" height="9" rx="2"></rect><path d="M3 9h14"></path></svg></span>
+<span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">{{ t.nome }}</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">{{ t.data }} · {{ t.status }}</span></span>
+<span style="font:600 15px/1.3 Inter;color:#14181F">{{ t.valor }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ mostrarSimulacao }}">
+<button onClick="{{ go.simular }}" style="width:100%;height:48px;margin-top:12px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="border-color:#0B2545">Simular uso do limite</button>
+</sc-if>
+<button onClick="{{ go.comoFunciona }}" style="width:100%;height:44px;margin-top:8px;border-radius:8px;border:0;background:transparent;color:#4A5160;font:600 13px Inter;cursor:pointer" style-hover="color:#0B2545">Como o EvoluCard funciona</button>
+<button onClick="{{ cen.aumentou }}" style="width:100%;height:40px;margin-top:12px;border-radius:8px;border:1px dashed #D7DBE0;background:#fff;color:#4A5160;font:600 12px Inter;cursor:pointer" style-hover="border-color:#0B2545;color:#0B2545">POC: novas vendas entraram no cálculo</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_limiteAjustar }}">
+<div data-screen-label="13 Ajustar meu limite" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="font:700 22px/1.3 Inter;color:#14181F;margin-bottom:4px">Como você quer usar seu limite?</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 16px;text-wrap:pretty">Você decide se o EvoluCard pode ir além da faixa sem custo. Pode mudar isso quando quiser.</p>
+
+<button onClick="{{ setPrefSemCusto }}" style="width:100%;text-align:left;background:#fff;border:1.5px solid {{ bordaSemCusto }};border-radius:12px;padding:16px;cursor:pointer;display:flex;gap:12px" style-hover="border-color:#0B2545">
+<span style="width:22px;height:22px;border-radius:50%;border:1.5px solid {{ bordaSemCusto }};flex:none;display:flex;align-items:center;justify-content:center;margin-top:2px"><span style="width:12px;height:12px;border-radius:50%;background:{{ dotSemCusto }}"></span></span>
+<span style="flex:1"><span style="display:block;font:600 17px/1.3 Inter;color:#14181F">Usar somente sem custo</span><span style="display:block;font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Usa apenas valores que permitem manter a operação dentro da janela sem custo.</span></span>
+</button>
+
+<button onClick="{{ setPrefAumentar }}" style="width:100%;text-align:left;background:#fff;border:1.5px solid {{ bordaAumentar }};border-radius:12px;padding:16px;margin-top:10px;cursor:pointer;display:flex;gap:12px" style-hover="border-color:#0B2545">
+<span style="width:22px;height:22px;border-radius:50%;border:1.5px solid {{ bordaAumentar }};flex:none;display:flex;align-items:center;justify-content:center;margin-top:2px"><span style="width:12px;height:12px;border-radius:50%;background:{{ dotAumentar }}"></span></span>
+<span style="flex:1"><span style="display:block;font:600 17px/1.3 Inter;color:#14181F">Permitir aumentar meu limite</span><span style="display:block;font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Quando necessário, o EvoluCard pode utilizar recebíveis mais distantes. Se houver algum custo, ele será apresentado antes da confirmação.</span></span>
+</button>
+
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;align-items:center;gap:12px">
+<span style="flex:1"><span style="display:block;font:400 15px/1.3 Inter;color:#14181F">Sempre me pergunte antes de gerar custo</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Nada é cobrado sem a sua confirmação.</span></span>
+<button onClick="{{ togglePedir }}" aria-label="Sempre me pergunte antes de gerar custo" style="width:44px;height:26px;border-radius:13px;border:0;background:{{ fundoPedir }};flex:none;display:flex;align-items:center;justify-content:{{ ladoPedir }};padding:3px;cursor:pointer"><span style="width:20px;height:20px;border-radius:50%;background:#fff"></span></button>
+</div>
+
+<div style="background:#F5F6F8;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;gap:10px">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="10" cy="10" r="7"></circle><path d="M10 6.5v.01M10 9v4.5"></path></svg>
+<div style="font:400 13px/1.5 Inter;color:#4A5160">Recebíveis dentro de até 30 dias formam o seu limite sem custo. Recebíveis posteriores podem ampliar sua capacidade de compra, e o custo aparece antes de você decidir.</div>
+</div>
+
+<button onClick="{{ abrirSheetPref }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Salvar preferência</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_comoFunciona }}">
+<div data-screen-label="14 Como funciona" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="width:40px;height:40px;border-radius:10px;background:#E6F4F7;display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0E6B79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13.5 8.5 9l3 3L16 7"></path><path d="M12.5 7H16v3.5"></path></svg></div>
+<div style="font:600 17px/1.35 Inter;color:#14181F">Seu recebível vira limite</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 0;text-wrap:pretty">Seu limite acompanha as vendas da sua empresa.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="width:40px;height:40px;border-radius:10px;background:#E6F4F7;display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0E6B79" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"></circle><path d="M10 6.2V10l2.6 1.7"></path></svg></div>
+<div style="font:600 17px/1.35 Inter;color:#14181F">Até 30 dias sem custo de antecipação</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 0;text-wrap:pretty">Use recebíveis elegíveis como capacidade de compra antes da liquidação.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="width:40px;height:40px;border-radius:10px;background:#E6F4F7;display:flex;align-items:center;justify-content:center;margin-bottom:12px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0E6B79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5h11v9h-11z"></path><path d="M7 9h6M7 12h3"></path></svg></div>
+<div style="font:600 17px/1.35 Inter;color:#14181F">Sem fatura tradicional</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 0;text-wrap:pretty">As compras são liquidadas utilizando os recebíveis vinculados ao produto.</p>
+</div>
+<button onClick="{{ go.limite }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Voltar para o meu limite</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_simular }}">
+<div data-screen-label="15 Simular uso do limite" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 14px;text-wrap:pretty">Consulta rápida para saber se um valor cabe no seu limite. Você não precisa simular para usar o cartão.</p>
+<label for="v2val" style="display:block;font:600 12px/1.2 Inter;color:#4A5160;margin-bottom:6px">VALOR DA COMPRA</label>
+<div style="display:flex;align-items:center;height:56px;border-radius:8px;border:1.5px solid #D7DBE0;padding:0 14px" style-focus="border-color:#0B2545"><span style="font:600 17px Inter;color:#4A5160;margin-right:8px">R$</span><input id="v2val" value="{{ valorInput }}" onChange="{{ setValor }}" style="flex:1;border:0;outline:none;font:700 28px Inter;color:#14181F;background:transparent;width:100%"></div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<button onClick="{{ preset.v3200 }}" style="flex:1;height:40px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">R$ 3.200</button>
+<button onClick="{{ preset.v6800 }}" style="flex:1;height:40px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">R$ 6.800</button>
+<button onClick="{{ preset.v10000 }}" style="flex:1;height:40px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">R$ 10.000</button>
+</div>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Disponível</span><span style="font:600 15px Inter;color:#14181F">{{ disponivel }}</span></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span style="font:400 15px Inter;color:#4A5160">Limite máximo</span><span style="font:600 15px Inter;color:#14181F">Até {{ maximo }}</span></div>
+</div>
+<button onClick="{{ simularAgora }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Simular</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_simulResultado }}">
+<div data-screen-label="16 Resultado da simulação" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:20px 16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">VALOR SIMULADO</div>
+<div style="font:700 34px/1.15 Inter;color:#0B2545;margin:8px 0 0;letter-spacing:-.02em">{{ valor }}</div>
+<sc-if value="{{ simSemCusto }}">
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:#EAF5EF;margin-top:14px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#166B44" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg><span style="font:600 12px/1 Inter;color:#166B44">Cabe no seu limite, sem custo</span></div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:14px 0 0;text-wrap:pretty">Esse valor usa recebíveis dentro da janela de 30 dias. Você pode passar o cartão normalmente.</p>
+</sc-if>
+<sc-if value="{{ simComCusto }}">
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:#FDF3DA;margin-top:14px"><span style="width:6px;height:6px;border-radius:50%;background:#B07F05"></span><span style="font:600 12px/1 Inter;color:#B07F05">Usa limite adicional</span></div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:14px 0 0;text-wrap:pretty">Parte desse valor usa recebíveis mais distantes, então há um custo. Ele só é aplicado se você confirmar na hora da compra.</p>
+<div style="background:#F5F6F8;border-radius:8px;padding:14px;margin-top:14px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Custo da operação</span><span style="font:700 17px Inter;color:#14181F">{{ custoTxt }}</span></div>
+<div style="font:400 12px/1.45 Inter;color:#4A5160;margin-top:6px">Equivale a {{ taxaTxt }} ao mês sobre o período excedente. Valor de demonstração.</div>
+</div>
+</sc-if>
+<sc-if value="{{ simBloqueada }}">
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:#FBEDEB;margin-top:14px"><span style="width:6px;height:6px;border-radius:50%;background:#C4372B"></span><span style="font:600 12px/1 Inter;color:#C4372B">Acima do que sua preferência permite</span></div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:14px 0 0;text-wrap:pretty">Sua preferência atual usa somente a faixa sem custo. Para essa compra, você precisaria permitir aumentar o limite.</p>
+<button onClick="{{ go.limiteAjustar }}" style="width:100%;height:44px;margin-top:14px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="background:#F5F6F8">Ajustar meu limite</button>
+</sc-if>
+<sc-if value="{{ simInsuficiente }}">
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:#FBEDEB;margin-top:14px"><span style="width:6px;height:6px;border-radius:50%;background:#C4372B"></span><span style="font:600 12px/1 Inter;color:#C4372B">Acima do seu limite máximo</span></div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:14px 0 0;text-wrap:pretty">Hoje seu limite máximo é {{ maximo }}. Conforme novas vendas entram, esse valor sobe.</p>
+</sc-if>
+</div>
+<button onClick="{{ go.limite }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Voltar para o meu limite</button>
+<button onClick="{{ go.simular }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="border-color:#0B2545">Simular outro valor</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_transacoes }}">
+<div data-screen-label="17 Transações" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:400 15px Inter;color:#4A5160">Compras em agosto</span><span style="font:700 22px Inter;color:#0B2545">R$ 6.200,00</span>
+</div>
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">AGOSTO</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
+<sc-for list="{{ todas }}" as="t" hint-placeholder-count="6">
+<button onClick="{{ t.abrir }}" style="display:flex;align-items:center;gap:12px;width:100%;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:68px" style-hover="background:#F5F6F8">
+<span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="14" height="9" rx="2"></rect><path d="M3 9h14"></path></svg></span>
+<span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">{{ t.nome }}</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">{{ t.data }} · {{ t.status }}</span></span>
+<span style="text-align:right"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">{{ t.valor }}</span><span style="display:block;font:400 12px/1.3 Inter;color:#4A5160;margin-top:2px">{{ t.extra }}</span></span>
+</button>
+</sc-for>
+</div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;text-align:center;margin-top:16px">Você está vendo as compras dos últimos 30 dias.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_transacaoDet }}">
+<div data-screen-label="18 Detalhe da transação" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:20px 16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">COMPRA</div>
+<div style="font:600 17px/1.35 Inter;color:#14181F;margin-top:8px">{{ txNome }}</div>
+<div style="font:700 34px/1.15 Inter;color:#0B2545;margin:6px 0 6px;letter-spacing:-.02em">{{ txValor }}</div>
+<div style="font:400 15px/1.4 Inter;color:#4A5160">{{ txDataLonga }}</div>
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:#EAF5EF;margin-top:14px"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#166B44" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg><span style="font:600 12px/1 Inter;color:#166B44">Aprovada</span></div>
+</div>
+
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;margin-top:12px;padding:16px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Cartão utilizado</span><span style="font:600 15px Inter;color:#14181F">EvoluCard {{ txCartao }}</span></div>
+<div style="height:1px;background:#F5F6F8;margin:12px 0"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Data</span><span style="font:600 15px Inter;color:#14181F">{{ txDataLonga }}</span></div>
+<sc-if value="{{ txTemCusto }}">
+<div style="height:1px;background:#F5F6F8;margin:12px 0"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Custo da operação</span><span style="font:600 15px Inter;color:#14181F">{{ txCusto }}</span></div>
+<div style="font:400 12px/1.45 Inter;color:#4A5160;margin-top:6px">Custo aceito por você no momento da compra, por usar limite adicional.</div>
+</sc-if>
+</div>
+
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;margin-top:12px;overflow:hidden">
+<button onClick="{{ go.naoReconheco }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#FBEDEB;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 6.5v4M10 13.4h.01"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Não reconheço esta compra</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_naoReconheco }}">
+<div data-screen-label="19 Não reconheço esta compra" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="width:44px;height:44px;border-radius:12px;background:#FBEDEB;display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="M11 7v4.5M11 14.6h.01"></path></svg></div>
+<div style="font:700 22px/1.3 Inter;color:#14181F">Não reconhece esta compra?</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Entre em contato com nosso atendimento para analisarmos a transação.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 15px/1.35 Inter;color:#14181F">{{ txNome }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">{{ txDataLonga }} · {{ txValor }}</div>
+</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ falarAtendimento }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Falar com atendimento</button>
+<sc-if value="{{ naoBloqueado }}">
+<button onClick="{{ abrirSheetBloqueio }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer" style-hover="background:#FBEDEB">Bloquear cartão agora</button>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;text-align:center;margin-top:10px">Bloquear impede novas compras. Você pode desbloquear a qualquer momento.</div>
+</sc-if>
+<sc-if value="{{ bloqueado }}">
+<div style="background:#FBEDEB;border:1px solid #EBC4BF;border-radius:12px;padding:14px 16px;margin-top:8px;display:flex;gap:10px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="10" cy="10" r="6.5"></circle><path d="M7 7l6 6"></path></svg><div><div style="font:600 15px/1.35 Inter;color:#14181F">Seu cartão está bloqueado</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Nenhuma nova compra será aprovada até você desbloquear.</div></div></div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_cartao }}">
+<div data-screen-label="20 Cartão" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="border-radius:12px;background:#0B2545;padding:20px 18px;position:relative;overflow:hidden">
+<div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(23,162,184,.16)"></div>
+<div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between"><div><img src="uploads/evoluservices-branco.png" alt="Evoluservices" style="display:block;width:118px;height:auto"><div style="font:600 12px/1.3 Inter;color:#fff;margin-top:6px;letter-spacing:.02em">EvoluCard virtual</div></div><span style="width:34px;height:24px;border-radius:4px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font:600 10px Inter;color:#fff">BAND</span></div>
+<div style="position:relative;font:600 17px/1.3 Inter;color:#fff;letter-spacing:.08em;margin-top:28px">{{ numeroCartao }}</div>
+<div style="position:relative;display:flex;gap:24px;margin-top:14px"><div><div style="font:400 12px/1.2 Inter;color:#A9BACE">VALIDADE</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:2px">{{ validadeTxt }}</div></div><div><div style="font:400 12px/1.2 Inter;color:#A9BACE">CÓDIGO</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:2px">{{ cvvTxt }}</div></div></div>
+<div style="position:relative;margin-top:18px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:rgba(255,255,255,.12)"><span style="width:6px;height:6px;border-radius:50%;background:{{ statusDot }}"></span><span style="font:600 12px/1 Inter;color:#fff">{{ statusCartaoTxt }}</span></div>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:12px">
+<button onClick="{{ abrirSheetDados }}" style="flex:1;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="background:#F5F6F8">{{ txtVerDados }}</button>
+<button onClick="{{ copiado }}" style="flex:1;height:48px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="border-color:#0B2545">Copiar número</button>
+</div>
+
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:400 15px Inter;color:#4A5160">Limite disponível</span><span style="font:700 22px Inter;color:#0B2545">{{ disponivel }}</span></div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:6px">O cartão virtual e o físico usam o mesmo limite.</div>
+</div>
+
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">CONFIGURAÇÕES DO CARTÃO</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
+<button onClick="{{ go.cartaoDados }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="14" height="9" rx="2"></rect><path d="M3 9h14"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Dados do cartão</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+<button onClick="{{ abrirSheetBloqueio }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M7 7l6 6"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">{{ txtBloqueio }}</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+<button onClick="{{ go.cartaoSenha }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="4.5" y="8.5" width="11" height="8" rx="2"></rect><path d="M7.5 8.5V6.8a2.5 2.5 0 0 1 5 0v1.7"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Senha</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+<sc-if value="{{ mostrarWallet }}">
+<button onClick="{{ addWallet }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="14" height="10" rx="2.5"></rect><path d="M13 10.5h2"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Carteira digital</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+</sc-if>
+<button onClick="{{ go.seguranca }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5 16.5 5v4.8c0 3.8-2.6 7-6.5 8.2-3.9-1.2-6.5-4.4-6.5-8.2V5L10 2.5Z"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Segurança</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+<button onClick="{{ go.suporte }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"></circle><path d="M8 8a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9v.4M10 13.6h.01"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Suporte</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+</div>
+
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">CARTÃO FÍSICO</div>
+<sc-if value="{{ fisicoNaoSolicitado }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 15px/1.35 Inter;color:#14181F">Cartão físico</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Opcional. Seu cartão virtual já funciona para compras online e por aproximação com a carteira digital.</div>
+<button onClick="{{ go.cartaoFisico }}" style="height:44px;margin-top:14px;padding:0 16px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="background:#F5F6F8">Solicitar cartão físico</button>
+</div>
+</sc-if>
+<sc-if value="{{ fisicoACaminho }}">
+<button onClick="{{ go.cartaoAcomp }}" style="width:100%;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px" style-hover="border-color:#0B2545">
+<span style="flex:1"><span style="display:block;font:600 15px/1.35 Inter;color:#14181F">Cartão físico em produção</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Previsão de entrega até 12 de setembro</span></span>
+<span style="font:600 13px Inter;color:#0B2545">Acompanhar entrega</span>
+</button>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_cartaoDados }}">
+<div data-screen-label="21 Dados do cartão" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<sc-if value="{{ dadosOcultos }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 17px/1.35 Inter;color:#14181F">Os dados do cartão são sensíveis</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 0;text-wrap:pretty">Confirme sua identidade para ver número, validade e código de segurança.</p>
+<button onClick="{{ abrirSheetDados }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Confirmar com biometria</button>
+</div>
+</sc-if>
+<sc-if value="{{ dadosVisiveis }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">NÚMERO DO CARTÃO</div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px"><span style="font:700 22px/1.2 Inter;color:#14181F;letter-spacing:.04em">5241 8830 2214 5432</span><button onClick="{{ copiado }}" style="height:32px;padding:0 10px;border-radius:6px;border:1px solid #D7DBE0;background:#fff;font:600 12px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">Copiar</button></div>
+<div style="height:1px;background:#F5F6F8;margin:16px 0"></div>
+<div style="display:flex;gap:32px">
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">VALIDADE</div><div style="font:600 17px/1.3 Inter;color:#14181F;margin-top:4px">09/31</div></div>
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">CÓDIGO</div><div style="font:600 17px/1.3 Inter;color:#14181F;margin-top:4px">318</div></div>
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">TITULAR</div><div style="font:600 17px/1.3 Inter;color:#14181F;margin-top:4px">Clínica Horizonte</div></div>
+</div>
+<div style="font:400 12px/1.45 Inter;color:#4A5160;margin-top:16px">O código de segurança muda periodicamente. Use sempre o valor mostrado aqui.</div>
+<button onClick="{{ esconderDados }}" style="width:100%;height:44px;margin-top:14px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="border-color:#0B2545">Esconder dados</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_cartaoSenha }}">
+<div data-screen-label="22 Senha do cartão" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 17px/1.35 Inter;color:#14181F">Senha de quatro dígitos</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 16px;text-wrap:pretty">Usada nas compras presenciais com o cartão físico e em algumas máquinas de cartão.</p>
+<div style="display:flex;gap:10px">
+<div style="flex:1;height:56px;border-radius:8px;border:1.5px solid #D7DBE0;background:#F5F6F8;display:flex;align-items:center;justify-content:center;font:700 22px Inter;color:#14181F">•</div>
+<div style="flex:1;height:56px;border-radius:8px;border:1.5px solid #D7DBE0;background:#F5F6F8;display:flex;align-items:center;justify-content:center;font:700 22px Inter;color:#14181F">•</div>
+<div style="flex:1;height:56px;border-radius:8px;border:1.5px solid #D7DBE0;background:#F5F6F8;display:flex;align-items:center;justify-content:center;font:700 22px Inter;color:#14181F">•</div>
+<div style="flex:1;height:56px;border-radius:8px;border:1.5px solid #D7DBE0;background:#F5F6F8;display:flex;align-items:center;justify-content:center;font:700 22px Inter;color:#14181F">•</div>
+</div>
+<button onClick="{{ salvarSenha }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Salvar nova senha</button>
+</div>
+<div style="background:#F5F6F8;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;gap:10px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M10 2.5 16.5 5v4.8c0 3.8-2.6 7-6.5 8.2-3.9-1.2-6.5-4.4-6.5-8.2V5L10 2.5Z"></path></svg><div style="font:400 13px/1.5 Inter;color:#4A5160">Evite datas de nascimento e sequências. Nunca compartilhe sua senha, nem com nossa equipe.</div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_cartaoFisico }}">
+<div data-screen-label="23 Cartão físico" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:700 22px/1.3 Inter;color:#14181F">Solicitar cartão físico</div>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Ele chega no endereço da empresa e usa o mesmo limite do cartão virtual. Você pode continuar comprando com o virtual até lá.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:10px">ENDEREÇO DE ENTREGA</div>
+<div style="font:400 15px/1.5 Inter;color:#14181F">Av. Paulista, 1842, sala 71<br>Bela Vista, São Paulo, SP<br>01310-200</div>
+<button style="height:40px;margin-top:12px;padding:0 14px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="border-color:#0B2545">Alterar endereço</button>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Emissão</span><span style="font:600 15px Inter;color:#14181F">Sem custo</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font:400 15px Inter;color:#4A5160">Previsão de entrega</span><span style="font:600 15px Inter;color:#14181F">Até 10 dias úteis</span></div>
+</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ abrirSheetFisico }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Solicitar meu cartão físico</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_cartaoAcomp }}">
+<div data-screen-label="24 Acompanhar entrega" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 17px/1.35 Inter;color:#14181F">Cartão físico em produção</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Previsão de entrega até 12 de setembro</div>
+<div style="display:flex;flex-direction:column;gap:0;margin-top:20px">
+<div style="display:flex;gap:12px"><span style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:12px;height:12px;border-radius:50%;background:#1E8E5A"></span><span style="width:2px;flex:1;background:#1E8E5A"></span></span><div style="padding-bottom:20px"><div style="font:600 15px/1.3 Inter;color:#14181F">Solicitação recebida</div><div style="font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">26 de agosto, 09:41</div></div></div>
+<div style="display:flex;gap:12px"><span style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:12px;height:12px;border-radius:50%;background:#17A2B8"></span><span style="width:2px;flex:1;background:#D7DBE0"></span></span><div style="padding-bottom:20px"><div style="font:600 15px/1.3 Inter;color:#14181F">Em produção</div><div style="font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Personalização do cartão da Clínica Horizonte</div></div></div>
+<div style="display:flex;gap:12px"><span style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:12px;height:12px;border-radius:50%;background:#D7DBE0"></span><span style="width:2px;flex:1;background:#D7DBE0"></span></span><div style="padding-bottom:20px"><div style="font:600 15px/1.3 Inter;color:#4A5160">Enviado</div><div style="font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Avisamos com o código de rastreio</div></div></div>
+<div style="display:flex;gap:12px"><span style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:12px;height:12px;border-radius:50%;background:#D7DBE0"></span></span><div><div style="font:600 15px/1.3 Inter;color:#4A5160">Entregue</div><div style="font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Você ativa o cartão pelo app quando chegar</div></div></div>
+</div>
+</div>
+<div style="background:#E6F4F7;border:1px solid #A8DCE4;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;gap:10px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#0E6B79" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:1px"><rect x="3" y="5.5" width="14" height="9" rx="2"></rect><path d="M3 9h14"></path></svg><div style="font:400 13px/1.5 Inter;color:#14181F">Seu cartão virtual continua funcionando normalmente. Nada depende da chegada do físico.</div></div>
+<button onClick="{{ go.cartao }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Voltar para o cartão</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_seguranca }}">
+<div data-screen-label="25 Segurança" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 17px/1.35 Inter;color:#14181F">Sua conta e seu cartão protegidos</div>
+<p style="font:400 13px/1.5 Inter;color:#4A5160;margin:6px 0 0">Pedimos confirmação de identidade para ver dados do cartão, bloquear, mudar a preferência do limite e aprovar compras fora do padrão.</p>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;margin-top:12px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #F5F6F8;padding:14px 16px;min-height:60px"><span style="flex:1"><span style="display:block;font:400 15px Inter;color:#14181F">Biometria neste aparelho</span><span style="display:block;font:400 13px Inter;color:#4A5160;margin-top:2px">Ativada para entrar e confirmar operações</span></span><span style="width:44px;height:26px;border-radius:13px;background:#0B2545;flex:none;display:flex;align-items:center;justify-content:flex-end;padding:3px"><span style="width:20px;height:20px;border-radius:50%;background:#fff"></span></span></div>
+<div style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #F5F6F8;padding:14px 16px;min-height:60px"><span style="flex:1"><span style="display:block;font:400 15px Inter;color:#14181F">Avisar sobre compras fora do padrão</span><span style="display:block;font:400 13px Inter;color:#4A5160;margin-top:2px">Perguntamos se foi você antes de aprovar</span></span><span style="width:44px;height:26px;border-radius:13px;background:#0B2545;flex:none;display:flex;align-items:center;justify-content:flex-end;padding:3px"><span style="width:20px;height:20px;border-radius:50%;background:#fff"></span></span></div>
+<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:60px"><span style="flex:1"><span style="display:block;font:400 15px Inter;color:#14181F">Autorização de consulta de recebíveis</span><span style="display:block;font:400 13px Inter;color:#4A5160;margin-top:2px">Ativa desde 3 de agosto de 2026</span></span><span style="font:600 13px Inter;color:#0B2545">Revisar</span></div>
+</div>
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">DISPOSITIVOS AUTORIZADOS</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 16px"><span style="width:36px;height:36px;border-radius:10px;background:#EAF5EF;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="3" width="8" height="14" rx="2"></rect><path d="M9 14.5h2"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">iPhone de Marina</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">Este aparelho · ativo agora</span></span></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_suporte }}">
+<div data-screen-label="26 Suporte" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 17px/1.35 Inter;color:#14181F">Como podemos ajudar?</div>
+<p style="font:400 13px/1.5 Inter;color:#4A5160;margin:6px 0 0">Atendimento de segunda a sábado, das 8h às 20h.</p>
+<button onClick="{{ falarAtendimento }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Falar com atendimento</button>
+</div>
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">DÚVIDAS FREQUENTES</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
+<div style="border-bottom:1px solid #F5F6F8;padding:14px 16px"><div style="font:600 15px/1.35 Inter;color:#14181F">Como meu limite é calculado?</div><div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Ele vem dos valores que sua empresa tem a receber pelas vendas no cartão. Quando novas vendas entram, o limite é recalculado.</div></div>
+<div style="border-bottom:1px solid #F5F6F8;padding:14px 16px"><div style="font:600 15px/1.35 Inter;color:#14181F">Quando existe custo?</div><div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Somente quando a compra usa recebíveis além da janela sem custo, e apenas se você confirmar antes.</div></div>
+<div style="padding:14px 16px"><div style="font:600 15px/1.35 Inter;color:#14181F">Existe fatura para pagar?</div><div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Não. As compras são liquidadas com os recebíveis vinculados ao produto.</div></div>
+</div>
+</div>
+</sc-if>
+
+</div>
+<sc-if value="{{ showNav }}">
+<div style="flex:none;display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:1px solid #D7DBE0;padding:6px 4px 10px">
+<button onClick="{{ go.limite }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navLimite }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.5 9 9.5l3 3 5.5-5.5"></path><path d="M13.5 7h4v4"></path><path d="M3.5 18.5h15"></path></svg><span style="font:600 12px/1 Inter;color:{{ navLimite }}">Limite</span></button>
+<button onClick="{{ go.transacoes }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navTx }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h11l-2.5-2.5M18 14.5H7l2.5 2.5"></path></svg><span style="font:600 12px/1 Inter;color:{{ navTx }}">Transações</span></button>
+<button onClick="{{ go.cartao }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navCartao }}" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="16" height="11" rx="2.5"></rect><path d="M3 9.5h16"></path></svg><span style="font:600 12px/1 Inter;color:{{ navCartao }}">Cartão</span></button>
+</div>
+</sc-if>
+
+<sc-if value="{{ toast }}">
+<div style="position:absolute;left:16px;right:16px;bottom:96px;z-index:40;background:#14181F;border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;animation:evup .28s ease both;box-shadow:0 12px 30px rgba(0,0,0,.28)">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#17A2B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><circle cx="10" cy="10" r="7"></circle><path d="M10 6.5v4M10 13.4h.01"></path></svg>
+<div style="flex:1"><div style="font:600 15px/1.35 Inter;color:#fff">{{ toastTitulo }}</div><div style="font:400 13px/1.45 Inter;color:#C9D2DC;margin-top:2px">{{ toastTexto }}</div></div>
+<button onClick="{{ fecharToast }}" aria-label="Fechar aviso" style="width:24px;height:24px;border:0;background:transparent;cursor:pointer;color:#fff;font:400 16px Inter">×</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ sheetBio }}">
+<div style="position:absolute;inset:0;z-index:50;background:rgba(11,37,69,.55);animation:evfade .2s ease both;display:flex;flex-direction:column;justify-content:flex-end">
+<div style="background:#fff;border-radius:20px 20px 0 0;padding:24px 16px 28px;animation:evsheet .3s cubic-bezier(.2,.8,.2,1) both">
+<div style="width:40px;height:4px;border-radius:2px;background:#D7DBE0;margin:0 auto 20px"></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+<div style="width:80px;height:80px;border-radius:50%;background:#F5F6F8;border:1.5px solid #D7DBE0;display:flex;align-items:center;justify-content:center"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><circle cx="20" cy="20" r="4"></circle><circle cx="20" cy="20" r="9"></circle><circle cx="20" cy="20" r="14"></circle></svg></div>
+<div style="text-align:center"><div style="font:700 22px/1.25 Inter;color:#14181F">{{ sheetTitulo }}</div><p style="font:400 15px/1.5 Inter;color:#4A5160;margin:6px 0 0;text-wrap:pretty">{{ sheetTexto }}</p></div>
+<button onClick="{{ sheetOk }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">{{ sheetCta }}</button>
+<button onClick="{{ fecharSheet }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="background:#F5F6F8">Cancelar</button>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1120,&quot;height&quot;:1100},&quot;taxaMensal&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1.8,&quot;min&quot;:0.5,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;% ao mês&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Parâmetros financeiros&quot;},&quot;mostrarSimulacao&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;},&quot;mostrarWallet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;}}">
+const F = n => 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const META = {
+  splash: {h: 'none', dark: true},
+  login: {h: 'none'},
+  otp: {h: 'std', t: 'Código de acesso', b: 'login'},
+  obEmpresa: {h: 'std', t: 'Abrir minha conta', b: 'login'},
+  obResponsavel: {h: 'std', t: 'Abrir minha conta', b: 'obEmpresa'},
+  obDocumentos: {h: 'std', t: 'Abrir minha conta', b: 'obResponsavel'},
+  obBiometria: {h: 'std', t: 'Abrir minha conta', b: 'obDocumentos'},
+  obConsentimento: {h: 'std', t: 'Abrir minha conta', b: 'obBiometria'},
+  obAnalise: {h: 'none', dark: true},
+  obResultado: {h: 'none', dark: true},
+  obPronto: {h: 'none', dark: true},
+  limite: {h: 'home', nav: 'limite'},
+  limiteAjustar: {h: 'std', t: 'Ajustar meu limite', b: 'limite'},
+  comoFunciona: {h: 'std', t: 'Como funciona', b: 'limite'},
+  simular: {h: 'std', t: 'Simular uso do limite', b: 'limite'},
+  simulResultado: {h: 'std', t: 'Simulação', b: 'simular'},
+  transacoes: {h: 'std', t: 'Transações', b: 'limite', nav: 'tx'},
+  transacaoDet: {h: 'std', t: 'Detalhe da compra', b: 'transacoes'},
+  naoReconheco: {h: 'std', t: 'Compra não reconhecida', b: 'transacaoDet'},
+  cartao: {h: 'std', t: 'Cartão', b: 'limite', nav: 'cartao'},
+  cartaoDados: {h: 'std', t: 'Dados do cartão', b: 'cartao'},
+  cartaoSenha: {h: 'std', t: 'Senha', b: 'cartao'},
+  cartaoFisico: {h: 'std', t: 'Cartão físico', b: 'cartao'},
+  cartaoAcomp: {h: 'std', t: 'Acompanhar entrega', b: 'cartao'},
+  seguranca: {h: 'std', t: 'Segurança', b: 'cartao'},
+  suporte: {h: 'std', t: 'Suporte', b: 'cartao'}
+};
+const IDS = Object.keys(META);
+const DISP = 8450;
+const DISP_MAIOR = 9690;
+const MAXIMO = 12300;
+const MAX_MAIOR = 13540;
+const DIAS_EXC = 12;
+
+const TX = [
+  {id: 'dental', nome: 'Fornecedor Dental Brasil', data: '25 AGO', longa: '25 de agosto de 2026', valor: 1280, status: 'Aprovada', custo: 0, cartao: '5432'},
+  {id: 'grafica', nome: 'Gráfica Ourofino', data: '22 AGO', longa: '22 de agosto de 2026', valor: 2940, status: 'Aprovada', custo: 6.12, cartao: '5432'},
+  {id: 'uniformes', nome: 'Uniformes Atria', data: '19 AGO', longa: '19 de agosto de 2026', valor: 860, status: 'Aprovada', custo: 0, cartao: '5432'},
+  {id: 'medlar', nome: 'Locação Medlar', data: '14 AGO', longa: '14 de agosto de 2026', valor: 640, status: 'Aprovada', custo: 0, cartao: '5432'},
+  {id: 'papelaria', nome: 'Papelaria Central', data: '11 AGO', longa: '11 de agosto de 2026', valor: 318, status: 'Aprovada', custo: 0, cartao: '5432'},
+  {id: 'insumos', nome: 'Insumos Vega', data: '06 AGO', longa: '6 de agosto de 2026', valor: 162, status: 'Aprovada', custo: 0, cartao: '5432'}
+];
+
+class Component extends DCLogic {
+  state = {
+    tela: 'splash', pilha: [], toast: null, sheet: null,
+    consentOk: false, obResultado: 'aprovado',
+    prefLimite: 'aumentar', pedirConfirma: true,
+    aumentou: false, valor: 3200, simRes: 'semCusto',
+    bloqueado: false, dadosVisiveis: false, fisico: 'naoSolicitado',
+    tx: 'dental', otp: ''
+  };
+
+  resetScroll() {
+    const zera = () => { const el = document.getElementById('ev-scroll'); if (el) el.scrollTop = 0; };
+    zera(); requestAnimationFrame(zera); setTimeout(zera, 60);
+  }
+  nav(patch) { this.setState(patch); this.resetScroll(); }
+  componentDidMount() {
+    this.t = setTimeout(() => { if (this.state.tela === 'splash') this.ir('login'); }, 1900);
+  }
+  componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.a); }
+  componentDidUpdate(pp, ps) { if (ps.tela !== this.state.tela) this.resetScroll(); }
+
+  ir(t, extra) {
+    this.nav(s => Object.assign({
+      tela: t, pilha: s.tela === t ? s.pilha : s.pilha.concat([s.tela]), sheet: null
+    }, extra || {}));
+  }
+  voltar = () => {
+    const m = META[this.state.tela] || {};
+    this.nav(s => {
+      const p = s.pilha.slice();
+      const alvo = p.length ? p.pop() : (m.b || 'limite');
+      return {tela: alvo, pilha: p, sheet: null};
+    });
+  };
+
+  taxa() { const t = Number(this.props.taxaMensal); return isFinite(t) && t > 0 ? t : 1.8; }
+  disp() { return this.state.aumentou ? DISP_MAIOR : DISP; }
+  max() { return this.state.aumentou ? MAX_MAIOR : MAXIMO; }
+  custo(v) {
+    const exc = Math.max(0, v - this.disp());
+    return Math.round(exc * (this.taxa() / 100) * (DIAS_EXC / 30) * 100) / 100;
+  }
+  simular = () => {
+    const v = this.state.valor;
+    let r = 'semCusto';
+    if (v > this.max()) r = 'insuficiente';
+    else if (v > this.disp()) r = this.state.prefLimite === 'semCusto' ? 'bloqueada' : 'comCusto';
+    this.ir('simulResultado', {simRes: r});
+  };
+
+  renderVals() {
+    const s = this.state, m = META[s.tela] || {h: 'std'};
+    const v = {};
+    IDS.forEach(id => { v['is_' + id] = s.tela === id; });
+    v.go = {};
+    IDS.forEach(id => { v.go[id] = () => this.ir(id); });
+
+    v.headerHome = m.h === 'home';
+    v.headerStd = m.h === 'std';
+    v.barColor = (m.h === 'none' && !m.dark) ? '#14181F' : '#FFFFFF';
+    v.titulo = m.t || '';
+    v.showNav = !!m.nav;
+    v.navLimite = m.nav === 'limite' ? '#0B2545' : '#4A5160';
+    v.navTx = m.nav === 'tx' ? '#0B2545' : '#4A5160';
+    v.navCartao = m.nav === 'cartao' ? '#0B2545' : '#4A5160';
+    v.voltar = this.voltar;
+    v.telaAtual = 'Tela: ' + (m.t || s.tela);
+    v.reiniciar = () => this.nav({
+      tela: 'splash', pilha: [], toast: null, sheet: null, consentOk: false,
+      prefLimite: 'aumentar', aumentou: false, bloqueado: false, dadosVisiveis: false,
+      fisico: 'naoSolicitado', tx: 'dental', valor: 3200
+    });
+
+    v.taxaTxt = this.taxa().toLocaleString('pt-BR', {minimumFractionDigits: 2}) + '%';
+    v.disponivel = F(this.disp());
+    v.maximo = F(this.max());
+    v.aumentou = s.aumentou;
+    v.cardTopo = s.aumentou ? '0' : '-44px';
+
+    v.toast = !!s.toast;
+    v.toastTitulo = s.toast ? s.toast.t : '';
+    v.toastTexto = s.toast ? s.toast.x : '';
+    v.fecharToast = () => this.setState({toast: null});
+
+    // cenários da coluna de documentação
+    v.cen = {
+      obAprovado: () => this.nav({obResultado: 'aprovado', tela: 'obResultado', pilha: ['obAnalise']}),
+      obPendente: () => this.nav({obResultado: 'pendente', tela: 'obResultado', pilha: ['obAnalise']}),
+      obAnaliseRes: () => this.nav({obResultado: 'analise', tela: 'obResultado', pilha: ['obAnalise']}),
+      simSem: () => this.nav({valor: 3200, simRes: 'semCusto', tela: 'simulResultado', pilha: ['simular']}),
+      simCom: () => this.nav({valor: 10000, prefLimite: 'aumentar', simRes: 'comCusto', tela: 'simulResultado', pilha: ['simular']}),
+      aumentou: () => this.nav({aumentou: true, tela: 'limite', pilha: [], toast: {t: 'Seu limite aumentou', x: 'Novas vendas foram consideradas. Novo limite disponível: ' + F(DISP_MAIOR) + '.'}}),
+      txSemCusto: () => this.nav({tx: 'dental', tela: 'transacaoDet', pilha: ['transacoes']}),
+      txComCusto: () => this.nav({tx: 'grafica', tela: 'transacaoDet', pilha: ['transacoes']}),
+      fisicoACaminho: () => this.nav({fisico: 'producao', tela: 'cartaoAcomp', pilha: ['cartao']}),
+      bloqueado: () => this.nav({bloqueado: true, tela: 'cartao', pilha: []})
+    };
+
+    // onboarding
+    v.obAprovado = s.obResultado === 'aprovado';
+    v.obPendente = s.obResultado === 'pendente';
+    v.obEmAnalise = s.obResultado === 'analise';
+    v.consentOk = s.consentOk;
+    v.consentFalta = !s.consentOk;
+    v.toggleConsent = () => this.setState(p => ({consentOk: !p.consentOk}));
+    v.consentBorda = s.consentOk ? '#0B2545' : '#D7DBE0';
+    v.consentFundo = s.consentOk ? '#0B2545' : '#fff';
+    v.consentTick = s.consentOk ? '#FFFFFF' : 'transparent';
+    v.irObAnalise = () => {
+      this.ir('obAnalise');
+      this.a = setTimeout(() => this.nav({tela: 'obResultado', pilha: ['obAnalise']}), 2400);
+    };
+
+    // preferência de limite
+    v.prefTxt = s.prefLimite === 'semCusto' ? 'usar somente sem custo' : 'permitir aumentar meu limite';
+    v.bordaSemCusto = s.prefLimite === 'semCusto' ? '#0B2545' : '#D7DBE0';
+    v.bordaAumentar = s.prefLimite === 'aumentar' ? '#0B2545' : '#D7DBE0';
+    v.dotSemCusto = s.prefLimite === 'semCusto' ? '#0B2545' : 'transparent';
+    v.dotAumentar = s.prefLimite === 'aumentar' ? '#0B2545' : 'transparent';
+    v.setPrefSemCusto = () => this.setState({prefLimite: 'semCusto'});
+    v.setPrefAumentar = () => this.setState({prefLimite: 'aumentar'});
+    v.togglePedir = () => this.setState(p => ({pedirConfirma: !p.pedirConfirma}));
+    v.fundoPedir = s.pedirConfirma ? '#0B2545' : '#D7DBE0';
+    v.ladoPedir = s.pedirConfirma ? 'flex-end' : 'flex-start';
+
+    // simulação
+    v.mostrarSimulacao = this.props.mostrarSimulacao !== false;
+    v.mostrarWallet = this.props.mostrarWallet !== false;
+    v.valor = F(s.valor);
+    v.valorInput = s.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    v.setValor = e => {
+      const n = Number(String(e.target.value).replace(/[^0-9]/g, '')) / 100;
+      this.setState({valor: n});
+    };
+    v.preset = {};
+    [3200, 6800, 10000].forEach(n => { v.preset['v' + n] = () => this.setState({valor: n}); });
+    v.simularAgora = this.simular;
+    v.custoTxt = F(this.custo(s.valor));
+    v.simSemCusto = s.simRes === 'semCusto';
+    v.simComCusto = s.simRes === 'comCusto';
+    v.simBloqueada = s.simRes === 'bloqueada';
+    v.simInsuficiente = s.simRes === 'insuficiente';
+
+    // transações
+    const abrir = id => () => this.nav({tx: id, tela: 'transacaoDet', pilha: ['transacoes']});
+    const item = t => ({
+      nome: t.nome, data: t.data, status: t.status, valor: F(t.valor),
+      extra: t.custo > 0 ? 'Custo ' + F(t.custo) : '', abrir: abrir(t.id)
+    });
+    v.todas = TX.map(item);
+    v.ultimas = TX.slice(0, 3).map(item);
+    const tx = TX.filter(t => t.id === s.tx)[0] || TX[0];
+    v.txNome = tx.nome;
+    v.txValor = F(tx.valor);
+    v.txDataLonga = tx.longa;
+    v.txCartao = tx.cartao;
+    v.txTemCusto = tx.custo > 0;
+    v.txCusto = F(tx.custo);
+    v.falarAtendimento = () => this.setState({toast: {t: 'Atendimento acionado', x: 'Nesta POC o contato com a nossa equipe é representativo.'}});
+
+    // cartão
+    v.bloqueado = s.bloqueado;
+    v.naoBloqueado = !s.bloqueado;
+    v.statusCartaoTxt = s.bloqueado ? 'Bloqueado por você' : 'Ativo';
+    v.statusDot = s.bloqueado ? '#E0A106' : '#17A2B8';
+    v.txtBloqueio = s.bloqueado ? 'Desbloquear cartão' : 'Bloquear cartão';
+    v.dadosVisiveis = s.dadosVisiveis;
+    v.dadosOcultos = !s.dadosVisiveis;
+    v.esconderDados = () => this.setState({dadosVisiveis: false});
+    v.numeroCartao = s.dadosVisiveis ? '5241 8830 2214 5432' : '•••• •••• •••• 5432';
+    v.cvvTxt = s.dadosVisiveis ? '318' : '•••';
+    v.validadeTxt = s.dadosVisiveis ? '09/31' : '••/••';
+    v.txtVerDados = s.dadosVisiveis ? 'Esconder dados' : 'Ver dados do cartão';
+    v.copiado = () => this.setState({toast: {t: 'Número copiado', x: 'Cole no campo de pagamento da loja. O código muda a cada uso.'}});
+    v.addWallet = () => this.setState({toast: {t: 'Carteira digital', x: 'Nesta POC a adição à carteira do celular é representativa.'}});
+    v.salvarSenha = () => this.nav({tela: 'cartao', pilha: [], toast: {t: 'Senha atualizada', x: 'Use a nova senha nas compras presenciais.'}});
+    v.fisicoNaoSolicitado = s.fisico === 'naoSolicitado';
+    v.fisicoACaminho = s.fisico === 'producao';
+
+    // bottom sheets de biometria
+    const sheets = {
+      verDados: {t: 'Confirme que é você', x: 'Os dados do cartão são sensíveis. Use a biometria para vê-los.', c: 'Usar biometria', ok: () => this.setState({dadosVisiveis: true, sheet: null})},
+      bloqueio: {t: 'Confirme que é você', x: 'Alterar o bloqueio do cartão pede confirmação de identidade.', c: 'Usar biometria', ok: () => this.setState(p => ({
+        bloqueado: !p.bloqueado, sheet: null,
+        toast: {t: p.bloqueado ? 'Cartão desbloqueado' : 'Cartão bloqueado', x: p.bloqueado ? 'Você já pode usar o cartão nas suas compras.' : 'Nenhuma compra será aprovada até você desbloquear.'}
+      }))},
+      pref: {t: 'Confirme que é você', x: 'Mudar como seu limite é usado pede confirmação de identidade.', c: 'Usar biometria', ok: () => this.nav({
+        sheet: null, tela: 'limite', pilha: [],
+        toast: {t: 'Preferência salva', x: s.prefLimite === 'semCusto' ? 'Vamos usar apenas a faixa sem custo do seu limite.' : 'Podemos aumentar seu limite quando você aprovar o custo.'}
+      })},
+      fisico: {t: 'Confirme sua solicitação', x: 'Use a biometria para enviar o pedido do seu cartão físico.', c: 'Usar biometria', ok: () => this.nav({
+        fisico: 'producao', sheet: null, tela: 'cartaoAcomp', pilha: ['cartao'],
+        toast: {t: 'Cartão físico solicitado', x: 'Avisamos a cada mudança na entrega.'}
+      })}
+    };
+    const sh = s.sheet ? sheets[s.sheet] : null;
+    v.sheetBio = !!sh;
+    v.sheetTitulo = sh ? sh.t : '';
+    v.sheetTexto = sh ? sh.x : '';
+    v.sheetCta = sh ? sh.c : '';
+    v.sheetOk = sh ? sh.ok : null;
+    v.fecharSheet = () => this.setState({sheet: null});
+    v.abrirSheetDados = () => (s.dadosVisiveis ? this.setState({dadosVisiveis: false}) : this.setState({sheet: 'verDados'}));
+    v.abrirSheetBloqueio = () => this.setState({sheet: 'bloqueio'});
+    v.abrirSheetPref = () => this.setState({sheet: 'pref'});
+    v.abrirSheetFisico = () => this.setState({sheet: 'fisico'});
+
+    // teclado do código
+    v.otpBoxes = [0, 1, 2, 3, 4, 5].map(i => ({i: i, ch: s.otp[i] || ''}));
+    const digito = d => this.setState(p => {
+      const o = (p.otp + d).slice(0, 6);
+      if (o.length === 6) setTimeout(() => this.ir('limite', {otp: ''}), 320);
+      return {otp: o};
+    });
+    v.teclas = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '←'].map(d => ({
+      d: d,
+      fn: d === '←' ? () => this.setState(p => ({otp: p.otp.slice(0, -1)})) : (d ? () => digito(d) : () => {})
+    }));
+    return v;
+  }
+}
+</script>
+</body>
+</html>
