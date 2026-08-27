@@ -796,8 +796,20 @@
 <button onClick="{{ setAba.a_compras }}" style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#14181F;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="border-color:#0B2545"><sc-if value="{{ ab_compras }}"><span style="width:6px;height:6px;border-radius:50%;background:#17A2B8"></span></sc-if>Compras EvoluCard</button>
 <button onClick="{{ setAba.a_receb }}" style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#14181F;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="border-color:#0B2545"><sc-if value="{{ ab_receb }}"><span style="width:6px;height:6px;border-radius:50%;background:#17A2B8"></span></sc-if>Recebíveis</button>
 <button onClick="{{ setAba.a_antecip }}" style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#14181F;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="border-color:#0B2545"><sc-if value="{{ ab_antecip }}"><span style="width:6px;height:6px;border-radius:50%;background:#17A2B8"></span></sc-if>Antecipações</button>
+<button onClick="{{ setAba.a_contest }}" style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#14181F;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="border-color:#0B2545"><sc-if value="{{ ab_contest }}"><span style="width:6px;height:6px;border-radius:50%;background:#17A2B8"></span></sc-if>Contestações</button>
 </div>
 <div style="background:#F5F6F8;border:1px solid #E4E8ED;border-radius:8px;padding:10px 12px;margin-top:12px"><div style="font:400 12px/1.45 Inter;color:#4A5160">Compras EvoluCard são as suas saídas. Recebíveis são as suas vendas entrando.</div></div>
+
+<sc-if value="{{ verDental }}">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:16px 0 8px">25 DE AGOSTO</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
+<button onClick="{{ ctAbrirDental }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:64px" style-hover="background:#F5F6F8">
+<span style="width:36px;height:36px;border-radius:10px;background:{{ dentalFundo }};display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="{{ dentalTraco }}" stroke-width="1.5" stroke-linecap="round"><rect x="2.5" y="5" width="15" height="10" rx="2.5"></rect><path d="M2.5 8.6h15"></path></svg></span>
+<span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">Fornecedor Dental Brasil</span><span style="display:block;font:400 13px/1.4 Inter;color:#4A5160;margin-top:2px">{{ dentalLegenda }}</span></span>
+<span style="font:600 15px/1.3 Inter;color:#14181F">R$ 1.280,00</span>
+</button>
+</div>
+</sc-if>
 
 <sc-if value="{{ grupoHoje }}">
 <div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:16px 0 8px">HOJE, 3 DE AGOSTO</div>
@@ -907,13 +919,49 @@
 <div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Identificador</span><span style="font:600 13px Inter;color:#4A5160">EVO-2026-0803-4471</span></div>
 </div>
 </div>
-<button onClick="{{ go.contestaConfirma }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#FBEDEB"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"></circle><path d="M10 6.4v4M10 13.4h.01"></path></svg>Não reconheço esta compra</button>
-<button onClick="{{ go.ajuda }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="background:#fff">Preciso de ajuda com esta compra</button>
+<sc-if value="{{ ctAberta }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">CONTESTAÇÃO</div><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FDF3DA;flex:none"><span style="width:6px;height:6px;border-radius:50%;background:#E0A106"></span><span style="font:600 12px/1 Inter;color:#8A6404">{{ ctStatusTxt }}</span></span></div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:10px">Aberta em 27 AGO · Protocolo {{ ctProto }}</div>
+<button onClick="{{ go.ctAcomp }}" style="height:40px;margin-top:12px;padding:0 14px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">Acompanhar</button>
+</div>
+</sc-if>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 17px/1.3 Inter;color:#14181F">Precisa de ajuda com esta compra?</div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Se você não reconhece a compra ou identificou algum problema com ela, você pode abrir uma contestação.</div>
+<button onClick="{{ ctIniciar }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:14px">Contestar esta compra</button>
+<button onClick="{{ go.ajuda }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:4px">Preciso de ajuda</button>
+</div>
 </div>
 </sc-if>
 
 <sc-if value="{{ is_cartao }}">
 <div data-screen-label="19 Área do cartão" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<sc-if value="{{ ctBloqSeg }}">
+<div style="background:#fff;border:1.5px solid #EBC4BF;border-radius:12px;padding:16px;margin-bottom:12px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+<div><div style="font:600 15px/1.35 Inter;color:#14181F">Cartão virtual</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">•••• {{ ctFinal }}</div></div>
+<span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FBEDEB;flex:none"><span style="width:6px;height:6px;border-radius:50%;background:#C4372B"></span><span style="font:600 12px/1 Inter;color:#8E271E">Bloqueado por segurança</span></span>
+</div>
+<div style="height:1px;background:#F5F6F8;margin:14px 0"></div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160">Uma contestação por compra não reconhecida foi aberta.</div>
+<button onClick="{{ go.ctAcomp }}" style="height:40px;margin-top:12px;padding:0 14px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 13px Inter;color:#0B2545;cursor:pointer" style-hover="border-color:#0B2545">Ver a contestação</button>
+</div>
+<sc-if value="{{ ctNovaViaAnalise }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-bottom:12px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:8px">NOVA VIA</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div style="font:600 15px/1.35 Inter;color:#14181F">Novo cartão</div><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FDF3DA;flex:none"><span style="width:6px;height:6px;border-radius:50%;background:#E0A106"></span><span style="font:600 12px/1 Inter;color:#8A6404">Em preparação</span></span></div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:8px">Seu novo cartão virtual estará disponível após a análise de segurança.</div>
+</div>
+</sc-if>
+<sc-if value="{{ ctNovaViaDisp }}">
+<div style="background:#fff;border:1px solid #C6E4D3;border-radius:12px;padding:16px;margin-bottom:12px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="width:28px;height:28px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><div style="flex:1"><div style="font:600 15px/1.35 Inter;color:#14181F">Seu novo cartão virtual está disponível</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">A via anterior segue bloqueada e não pode mais ser usada.</div></div></div>
+<div style="display:flex;gap:8px;margin-top:14px"><button onClick="{{ go.cartaoVirtual }}" style="flex:1;height:44px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 13px Inter;cursor:pointer" style-hover="background:#143A63">Ver cartão</button><button onClick="{{ addWallet }}" style="flex:1;height:44px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="border-color:#0B2545">Adicionar à carteira digital</button></div>
+</div>
+</sc-if>
+</sc-if>
+
 <div style="border-radius:12px;background:#0B2545;padding:20px 18px;position:relative;overflow:hidden">
 <div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(23,162,184,.16)"></div>
 <div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between"><div><img src="uploads/evoluservices-branco.png" alt="Evoluservices" style="display:block;width:128px;height:auto"><div style="font:600 12px/1.3 Inter;color:#fff;margin-top:6px;letter-spacing:.02em">EvoluCard</div></div><span style="width:34px;height:24px;border-radius:4px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font:600 10px Inter;color:#fff">BAND</span></div>
@@ -1211,6 +1259,17 @@
 
 <sc-if value="{{ is_notificacoes }}">
 <div data-screen-label="30 Notificações" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<sc-if value="{{ ctAberta }}">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:8px">CONTESTAÇÃO</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden;margin-bottom:20px">
+<sc-for list="{{ ctNotifs }}" as="n" hint-placeholder-count="4">
+<button onClick="{{ n.abrir }}" style="width:100%;display:flex;align-items:flex-start;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:14px 16px;cursor:pointer;text-align:left" style-hover="background:#F5F6F8">
+<span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M5.5 8.5a4.5 4.5 0 0 1 9 0v3l1.5 2.5H4l1.5-2.5v-3Z"></path><path d="M8.2 16.4a2 2 0 0 0 3.6 0"></path></svg></span>
+<span style="flex:1"><span style="display:block;font:600 15px/1.3 Inter;color:#14181F">{{ n.t }}</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">{{ n.x }}</span></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
 <div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:8px">HOJE</div>
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden">
 <div style="display:flex;gap:12px;border-bottom:1px solid #F5F6F8;padding:14px 16px"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><rect x="3.5" y="4.5" width="13" height="12" rx="2"></rect><path d="M3.5 8h13"></path></svg></span><div style="flex:1"><div style="font:600 15px/1.35 Inter;color:#14181F">Novo recebível identificado</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">R$ 1.240,00 da Cielo entram na sua agenda em 18 dias.</div><div style="font:400 12px/1.3 Inter;color:#4A5160;margin-top:6px">08:40</div></div><span style="width:8px;height:8px;border-radius:50%;background:#17A2B8;flex:none;margin-top:6px"></span></div>
@@ -1387,7 +1446,7 @@
 <div style="font:400 13px/1.5 Inter;color:#4A5160">Confirme apenas se você reconhece esta compra. Se não foi você, recuse e nós bloqueamos o cartão.</div>
 </div>
 <button onClick="{{ abrirSheetOnline }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="background:#128799"><svg width="20" height="20" viewBox="0 0 40 40" fill="none" stroke="#14181F" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="20" r="5"></circle><circle cx="20" cy="20" r="12"></circle></svg>Sim, confirmo esta compra</button>
-<button onClick="{{ go.contestaSeguranca }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer" style-hover="background:#FBEDEB">Não fui eu</button>
+<button onClick="{{ go.ctFraude }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer" style-hover="background:#FBEDEB">Não fui eu</button>
 </div>
 </sc-if>
 
@@ -1407,131 +1466,286 @@
 </div>
 </div>
 <button onClick="{{ go.home }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:#143A63">Sim, fui eu</button>
-<button onClick="{{ go.contestaSeguranca }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer" style-hover="background:#FBEDEB">Não reconheço</button>
+<button onClick="{{ go.ctFraude }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #C4372B;background:#fff;color:#C4372B;font:600 15px Inter;cursor:pointer" style-hover="background:#FBEDEB">Não reconheço</button>
 <div style="font:400 12px/1.5 Inter;color:#4A5160;text-align:center;margin-top:12px">Enquanto você não responde, esta compra fica pendente.</div>
 </div>
 </sc-if>
 
-<sc-if value="{{ is_contestaConfirma }}">
-<div data-screen-label="37 Não reconheço a compra" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<sc-if value="{{ is_ctTipo }}">
+<div data-screen-label="CT1 Qual e o problema" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 12px">Qual é o problema com esta compra?</h1>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;padding:14px 16px">
+<div style="font:600 15px/1.35 Inter;color:#14181F">{{ ctNome }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">{{ ctValor }} · {{ ctData }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160">Final do cartão •••• {{ ctFinal }}</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+<button onClick="{{ ctEscolherFraude }}" style="width:100%;text-align:left;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;cursor:pointer" style-hover="border-color:#0B2545">
+<div style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;border-radius:10px;background:#FBEDEB;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"></circle><path d="M10 6.5v4M10 13.4h.01"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.35 Inter;color:#14181F">Não reconheço esta compra</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Não fiz nem autorizei esta compra.</span></span></div>
+</button>
+<button onClick="{{ ctEscolherProblema }}" style="width:100%;text-align:left;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;cursor:pointer" style-hover="border-color:#0B2545">
+<div style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 6h13M3.5 10h13M3.5 14h8"></path></svg></span><span style="flex:1"><span style="display:block;font:600 15px/1.35 Inter;color:#14181F">Reconheço a compra, mas tenho um problema</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">A cobrança está errada, fui cobrado mais de uma vez, não recebi o produto ou tive outro problema.</span></span></div>
+</button>
+</div>
+<button onClick="{{ ctAjuda }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Preciso de ajuda</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctFraude }}">
+<div data-screen-label="CT2 Confirmar compra nao reconhecida" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 12px">Você confirma que não fez esta compra?</h1>
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
-<div style="font:700 22px/1.3 Inter;color:#14181F">Você não reconhece esta compra?</div>
-<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Confira os dados antes de abrir uma contestação. Se foi alguém da sua equipe, vale confirmar primeiro.</p>
-</div>
-<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
-<div style="display:flex;flex-direction:column;gap:10px">
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Estabelecimento</span><span style="font:600 15px Inter;color:#14181F">Softeq Equipamentos</span></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Valor</span><span style="font:600 15px Inter;color:#14181F">{{ compraValor }}</span></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Data</span><span style="font:600 15px Inter;color:#14181F">3 de agosto, 09:30</span></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Identificador</span><span style="font:600 13px Inter;color:#4A5160">EVO-2026-0803-4471</span></div>
-</div>
-</div>
-<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
-<div style="font:600 15px/1.35 Inter;color:#14181F;margin-bottom:12px">Qual o motivo?</div>
-<div style="display:flex;flex-direction:column;gap:8px">
-<div style="border:1.5px solid #0B2545;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #0B2545;display:flex;align-items:center;justify-content:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:#0B2545"></span></span><span style="font:400 15px Inter;color:#14181F">Não fui eu nem minha equipe</span></div>
-<div style="border:1px solid #D7DBE0;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #D7DBE0;flex:none"></span><span style="font:400 15px Inter;color:#14181F">Valor diferente do combinado</span></div>
-<div style="border:1px solid #D7DBE0;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #D7DBE0;flex:none"></span><span style="font:400 15px Inter;color:#14181F">Compra cobrada duas vezes</span></div>
-<div style="border:1px solid #D7DBE0;border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:10px"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid #D7DBE0;flex:none"></span><span style="font:400 15px Inter;color:#14181F">Não recebi o produto ou serviço</span></div>
-</div>
-</div>
-<button onClick="{{ go.contestaSeguranca }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Continuar</button>
-<button onClick="{{ go.compraDet }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:0;background:transparent;color:#4A5160;font:600 15px Inter;cursor:pointer" style-hover="background:#EDEFF2">Reconheci, voltar</button>
-</div>
-</sc-if>
-
-<sc-if value="{{ is_contestaSeguranca }}">
-<div data-screen-label="38 Proteger o cartão" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
-<div style="background:#fff;border:1.5px solid #EBC4BF;border-radius:12px;padding:20px 16px">
-<div style="width:44px;height:44px;border-radius:12px;background:#FBEDEB;display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#C4372B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2.5 18 5.5v5.2c0 4.2-2.8 7.7-7 9-4.2-1.3-7-4.8-7-9V5.5L11 2.5Z"></path><path d="M11 8v3.4M11 14.2h.01"></path></svg></div>
-<div style="font:700 22px/1.3 Inter;color:#14181F">Vamos proteger seu cartão agora</div>
-<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:8px 0 0;text-wrap:pretty">Se essa compra não foi sua, o mais seguro é bloquear o cartão antes de abrir a contestação. Nada muda no seu limite por causa disso.</p>
-</div>
-<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
-<div style="font:600 15px/1.35 Inter;color:#14181F;margin-bottom:12px">O que acontece em seguida</div>
-<div style="display:flex;flex-direction:column">
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:#0B2545;margin-top:5px"></span><span style="flex:1;width:1.5px;background:#D7DBE0"></span></div><div style="padding-bottom:14px"><div style="font:600 15px/1.3 Inter;color:#14181F">Bloqueamos o cartão</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Nenhuma nova compra é aprovada</div></div></div>
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:#0B2545;margin-top:5px"></span><span style="flex:1;width:1.5px;background:#D7DBE0"></span></div><div style="padding-bottom:14px"><div style="font:600 15px/1.3 Inter;color:#14181F">Abrimos a contestação</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Você acompanha o andamento aqui no app</div></div></div>
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:#fff;border:1.5px solid #D7DBE0;margin-top:5px"></span></div><div><div style="font:600 15px/1.3 Inter;color:#4A5160">Enviamos um cartão novo</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Se a contestação for confirmada, sem custo para você</div></div></div>
-</div>
-</div>
-<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px">
-<div style="font:400 13px/1.5 Inter;color:#4A5160">Os recebíveis comprometidos com esta compra continuam reservados até a análise terminar. Se a contestação for aceita, eles voltam para o seu limite.</div>
-</div>
-<button onClick="{{ abrirContesta }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Bloquear e abrir contestação</button>
-<button onClick="{{ abrirContestaSemBloqueio }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="background:#fff">Abrir sem bloquear o cartão</button>
-</div>
-</sc-if>
-
-<sc-if value="{{ is_contestaAberta }}">
-<div data-screen-label="39 Contestação aberta" style="min-height:100%;background:#0B2545;padding:72px 16px 24px;display:flex;flex-direction:column">
-<div style="width:64px;height:64px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4 4L19 7"></path></svg></div>
-<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:24px 0 8px">Contestação aberta.</h1>
-<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0;text-wrap:pretty">Já estamos cuidando disso. Você acompanha cada etapa aqui, e avisamos por notificação a cada mudança.</p>
-<div style="background:#fff;border-radius:12px;padding:16px;margin-top:24px">
-<div style="display:flex;flex-direction:column;gap:10px">
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Protocolo</span><span style="font:600 15px Inter;color:#14181F">CT-2026-0803-118</span></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Compra</span><span style="font:600 15px Inter;color:#14181F">{{ compraValor }}</span></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Prazo de resposta</span><span style="font:600 15px Inter;color:#14181F">Até 7 dias úteis</span></div>
-<sc-if value="{{ bloqueado }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Estabelecimento</span><span style="font:600 15px Inter;color:#14181F;text-align:right">{{ ctNome }}</span></div>
 <div style="height:1px;background:#F5F6F8"></div>
-<div style="display:flex;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Cartão 5432</span><span style="font:600 15px Inter;color:#C4372B">Bloqueado</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Valor</span><span style="font:600 15px Inter;color:#14181F">{{ ctValor }}</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Data</span><span style="font:600 15px Inter;color:#14181F">{{ ctData }}</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Final do cartão</span><span style="font:600 15px Inter;color:#14181F">•••• {{ ctFinal }}</span></div>
+</div>
+</div>
+<div style="display:flex;gap:10px;align-items:flex-start;background:#FDF3DA;border:1px solid #EDD7A0;border-radius:8px;padding:14px 16px;margin-top:12px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#B07F05" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:1px"><rect x="4" y="8.6" width="12" height="7.4" rx="2"></rect><path d="M7 8.6V6.8a3 3 0 0 1 6 0v1.8"></path></svg><div style="font:400 13px/1.5 Inter;color:#8A6404"><strong style="font-weight:600">Por segurança, seu cartão será bloqueado para evitar novas compras.</strong></div></div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ ctConfirmarFraude }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Confirmar e continuar</button>
+<button onClick="{{ voltar }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Voltar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctBloqueio }}">
+<div data-screen-label="CT3 Cartao bloqueado por seguranca" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="width:36px;height:36px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><div><div style="font:700 17px/1.3 Inter;color:#14181F">Cartão bloqueado por segurança</div><div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:4px">Esta via não poderá mais ser utilizada.</div></div></div>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:10px">NOVO CARTÃO</div>
+<div style="font:600 15px/1.35 Inter;color:#14181F">Cartão virtual</div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:2px">Seu novo cartão virtual estará disponível após a análise de segurança.</div>
+<div style="height:1px;background:#F5F6F8;margin:14px 0"></div>
+<div style="font:600 15px/1.35 Inter;color:#14181F">Cartão físico</div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160;margin-top:2px">Uma nova via poderá ser enviada após a confirmação da contestação.</div>
+</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ go.ctRevisao }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Continuar</button>
+<button onClick="{{ go.cartao }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Ver meu cartão</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctMotivo }}">
+<div data-screen-label="CT4 O que aconteceu" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 12px">O que aconteceu?</h1>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;padding:14px 16px">
+<div style="font:600 15px/1.35 Inter;color:#14181F">{{ ctNome }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">{{ ctValor }} · {{ ctData }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160">Final do cartão •••• {{ ctFinal }}</div>
+</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden;margin-top:16px">
+<sc-for list="{{ ctMotivos }}" as="mo" hint-placeholder-count="5">
+<button onClick="{{ mo.sel }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;border-bottom:1px solid #F5F6F8;background:#fff;padding:16px;cursor:pointer;text-align:left;min-height:64px" style-hover="background:#F5F6F8"><span style="flex:1;font:600 15px/1.35 Inter;color:#14181F">{{ mo.label }}</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
+</sc-for>
+</div>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;margin-top:12px">Seu cartão continua ativo. Bloquear só é necessário quando você não reconhece a compra.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctValor }}">
+<div data-screen-label="CT5 Valor contestado" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 12px">Qual valor você quer contestar?</h1>
+<div style="display:flex;flex-direction:column;gap:8px">
+<button onClick="{{ ctValorTotal }}" style="width:100%;text-align:left;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;cursor:pointer;border-color:{{ ctBordaTotal }};border-width:{{ ctTracoTotal }}" style-hover="border-color:#0B2545">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid {{ ctBordaTotal }};flex:none;display:flex;align-items:center;justify-content:center;margin-top:2px"><span style="width:10px;height:10px;border-radius:50%;background:{{ ctDotTotal }}"></span></span><span style="flex:1"><span style="display:block;font:600 15px/1.35 Inter;color:#14181F">Valor total da compra</span><span style="display:block;font:700 22px/1.25 Inter;color:#0B2545;margin-top:4px">{{ ctValor }}</span></span></div>
+</button>
+<button onClick="{{ ctValorParcial }}" style="width:100%;text-align:left;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;cursor:pointer;border-color:{{ ctBordaParcial }};border-width:{{ ctTracoParcial }}" style-hover="border-color:#0B2545">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="width:20px;height:20px;border-radius:50%;border:1.5px solid {{ ctBordaParcial }};flex:none;display:flex;align-items:center;justify-content:center;margin-top:2px"><span style="width:10px;height:10px;border-radius:50%;background:{{ ctDotParcial }}"></span></span><span style="flex:1"><span style="display:block;font:600 15px/1.35 Inter;color:#14181F">Outro valor</span><span style="display:block;font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Contestar apenas parte desta compra.</span></span></div>
+</button>
+</div>
+<sc-if value="{{ ctEhParcial }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<label style="display:block;font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:6px">VALOR A CONTESTAR</label>
+<div style="display:flex;align-items:center;gap:8px;height:64px;border-radius:8px;border:1.5px solid {{ ctBordaCampo }};padding:0 14px;background:#fff"><span style="font:600 22px Inter;color:#4A5160">R$</span><input value="{{ ctParcialInput }}" onChange="{{ ctSetParcial }}" style="flex:1;width:100%;border:0;outline:none;font:700 28px Inter;color:#14181F;background:transparent"></div>
+<sc-if value="{{ ctParcialInvalido }}">
+<div style="font:400 13px/1.45 Inter;color:#8E271E;margin-top:8px">O valor contestado precisa ser maior que zero e não pode passar de {{ ctValor }}.</div>
 </sc-if>
 </div>
+</sc-if>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ ctSeguirValor }}" style="width:100%;height:48px;border-radius:8px;border:0;background:{{ ctFundoSeguir }};color:#fff;font:600 15px Inter;cursor:pointer">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctDescricao }}">
+<div data-screen-label="CT6 Descricao do problema" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 4px">Conte um pouco mais sobre o problema</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 12px;text-wrap:pretty">Duas ou três frases já ajudam na análise.</p>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<textarea value="{{ ctDesc }}" onChange="{{ ctSetDesc }}" placeholder="Explique brevemente o que aconteceu." style="width:100%;min-height:132px;border-radius:8px;border:1.5px solid #D7DBE0;padding:12px 14px;font:400 15px/1.5 Inter;color:#14181F;background:#fff;resize:none" style-focus="border-color:#0B2545;outline:none"></textarea>
+<div style="font:400 12px/1.45 Inter;color:#4A5160;margin-top:8px">{{ ctMotivoTxt }} · {{ ctContestado }}</div>
+</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ go.ctComprovantes }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctComprovantes }}">
+<div data-screen-label="CT7 Comprovantes" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 4px">Adicionar comprovantes</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 12px;text-wrap:pretty">Você pode incluir recibos, conversas, comprovantes de cancelamento ou outros documentos que ajudem na análise.</p>
+<sc-if value="{{ ctTemArquivos }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;overflow:hidden;margin-bottom:12px">
+<sc-for list="{{ ctArquivos }}" as="ar" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:12px;border-bottom:1px solid #F5F6F8;padding:14px 16px;min-height:60px"><span style="width:28px;height:28px;border-radius:50%;background:#EAF5EF;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E8E5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="flex:1;font:400 15px/1.4 Inter;color:#14181F">{{ ar.nome }}</span><button onClick="{{ ar.remover }}" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid #D7DBE0;background:#fff;font:600 12px Inter;color:#4A5160;cursor:pointer" style-hover="border-color:#C4372B;color:#C4372B">Remover</button></div>
+</sc-for>
+</div>
+</sc-if>
+<button onClick="{{ ctAddArquivo }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><path d="M10 4v12M4 10h12"></path></svg>Adicionar arquivo</button>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;margin-top:10px">Aceitamos imagem e PDF. Nesta POC o envio do arquivo é representativo.</div>
+<div style="flex:1;min-height:20px"></div>
+<button onClick="{{ go.ctRevisao }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Continuar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctRevisao }}">
+<div data-screen-label="CT8 Revisar contestacao" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 12px">Revise sua contestação</h1>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">COMPRA</div><div style="font:600 15px/1.35 Inter;color:#14181F;margin-top:4px">{{ ctNome }}</div><div style="font:400 13px/1.45 Inter;color:#4A5160">{{ ctData }} · final •••• {{ ctFinal }}</div></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Valor da compra</span><span style="font:600 15px Inter;color:#14181F">{{ ctValor }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:600 15px Inter;color:#14181F">Valor contestado</span><span style="font:700 17px Inter;color:#0B2545">{{ ctContestado }}</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">MOTIVO</div><div style="font:600 15px/1.35 Inter;color:#14181F;margin-top:4px">{{ ctMotivoTxt }}</div></div>
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">DESCRIÇÃO</div><div style="font:400 15px/1.5 Inter;color:#4A5160;margin-top:4px;text-wrap:pretty">{{ ctDescTxt }}</div></div>
+<div><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">COMPROVANTES</div><div style="font:400 15px/1.5 Inter;color:#4A5160;margin-top:4px">{{ ctArquivosTxt }}</div></div>
+</div>
+</div>
+<sc-if value="{{ ctBloqSeg }}">
+<div style="display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:12px"><span style="width:28px;height:28px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font:600 15px/1.35 Inter;color:#14181F">Cartão bloqueado por segurança</span></div>
+</sc-if>
+<div style="background:#F5F6F8;border:1px solid #D7DBE0;border-radius:8px;padding:12px 14px;margin-top:12px"><div style="font:400 13px/1.5 Inter;color:#4A5160">Os recebíveis vinculados a esta compra seguem reservados durante a análise. O limite será atualizado conforme o processamento da contestação.</div></div>
+<button onClick="{{ ctEnviar }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer;margin-top:16px">Enviar contestação</button>
+<button onClick="{{ voltar }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Voltar e editar</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctProtocolo }}">
+<div data-screen-label="CT9 Contestacao recebida" style="min-height:100%;background:#0B2545;padding:72px 16px 24px;display:flex;flex-direction:column">
+<div style="width:64px;height:64px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#fff;margin:24px 0 8px">Contestação recebida</h1>
+<p style="font:400 15px/1.5 Inter;color:#C9D2DC;margin:0 0 20px;text-wrap:pretty">Recebemos sua solicitação e vamos acompanhar a análise.</p>
+<div style="background:rgba(255,255,255,.08);border-radius:12px;padding:16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#A9BACE">PROTOCOLO</div>
+<div style="font:700 22px/1.25 Inter;color:#fff;margin-top:4px">{{ ctProto }}</div>
+<div style="height:1px;background:rgba(255,255,255,.14);margin:14px 0"></div>
+<div style="font:600 15px/1.35 Inter;color:#fff">{{ ctNome }}</div>
+<div style="font:400 13px/1.45 Inter;color:#C9D2DC;margin-top:2px">{{ ctContestado }} contestados de {{ ctValor }}</div>
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.14);margin-top:12px"><span style="width:6px;height:6px;border-radius:50%;background:#17A2B8"></span><span style="font:600 12px/1 Inter;color:#fff">Contestação recebida</span></div>
 </div>
 <div style="flex:1;min-height:24px"></div>
-<button onClick="{{ go.contestaStatus }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Acompanhar contestação</button>
-<button onClick="{{ go.home }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:rgba(255,255,255,.1)">Voltar ao início</button>
+<button onClick="{{ go.ctAcomp }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#17A2B8;color:#14181F;font:600 15px Inter;cursor:pointer" style-hover="background:#128799">Acompanhar contestação</button>
+<button onClick="{{ go.home }}" style="width:100%;height:48px;margin-top:8px;border-radius:8px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font:600 15px Inter;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">Voltar ao início</button>
 </div>
 </sc-if>
 
-<sc-if value="{{ is_contestaStatus }}">
-<div data-screen-label="40 Status da contestação" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<sc-if value="{{ is_ctAcomp }}">
+<div data-screen-label="CT10 Acompanhar contestacao" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
-<div style="display:flex;align-items:center;justify-content:space-between"><div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">CT-2026-0803-118</div>
-<sc-if value="{{ ctRecebida }}"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:6px;background:#E6F4F7"><span style="width:6px;height:6px;border-radius:50%;background:#128799"></span><span style="font:600 12px/1 Inter;color:#0E6B79">Recebida</span></span></sc-if>
-<sc-if value="{{ ctAnalise }}"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:6px;background:#FDF3DA"><span style="width:6px;height:6px;border-radius:50%;background:#E0A106"></span><span style="font:600 12px/1 Inter;color:#8A6404">Em análise</span></span></sc-if>
-<sc-if value="{{ ctConcluida }}"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:6px;background:#EAF5EF"><span style="width:6px;height:6px;border-radius:50%;background:#1E8E5A"></span><span style="font:600 12px/1 Inter;color:#166B44">Concluída</span></span></sc-if>
-</div>
-<div style="font:700 28px/1.2 Inter;color:#14181F;margin:6px 0 4px">{{ compraValor }}</div>
-<div style="font:400 15px/1.5 Inter;color:#4A5160">Softeq Equipamentos · compra de 3 de agosto</div>
+<div style="font:600 15px/1.35 Inter;color:#14181F">{{ ctNome }}</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">{{ ctValor }} · {{ ctData }}</div>
+<div style="height:1px;background:#F5F6F8;margin:12px 0"></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 13px Inter;color:#4A5160">Protocolo</span><span style="font:600 13px Inter;color:#14181F">{{ ctProto }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px;margin-top:6px"><span style="font:400 13px Inter;color:#4A5160">Valor contestado</span><span style="font:600 13px Inter;color:#14181F">{{ ctContestado }}</span></div>
 </div>
 
-<sc-if value="{{ ctConcluida }}">
-<div style="background:#EAF5EF;border:1px solid #BFE0CE;border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;gap:10px">
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#166B44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M5 10.5l3.2 3.2L15 7"></path></svg>
-<div><div style="font:600 15px/1.35 Inter;color:#14181F">Contestação aceita</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Os recebíveis comprometidos voltaram para o seu limite e um cartão novo já foi enviado.</div></div>
+<sc-if value="{{ ctPedeInfo }}">
+<div style="background:#FDF3DA;border:1px solid #EDD7A0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 17px/1.3 Inter;color:#14181F">Precisamos de mais informações</div>
+<div style="font:400 13px/1.5 Inter;color:#8A6404;margin-top:4px">Precisamos de informações adicionais para continuar a análise.</div>
+<button onClick="{{ go.ctMaisInfo }}" style="height:44px;margin-top:14px;padding:0 16px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 13px Inter;cursor:pointer" style-hover="background:#143A63">Enviar informações</button>
 </div>
 </sc-if>
 
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
-<div style="font:600 17px/1.3 Inter;color:#14181F;margin-bottom:16px">Andamento</div>
-<div style="display:flex;flex-direction:column">
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:20px;height:20px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg></span><span style="flex:1;width:1.5px;background:#1E8E5A"></span></div><div style="padding-bottom:16px"><div style="font:600 15px/1.3 Inter;color:#14181F">Contestação recebida</div><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">3 de agosto, 10:12 · protocolo gerado</div></div></div>
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none">
-<sc-if value="{{ ctRecebida }}"><span style="width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #E0A106"></span></sc-if>
-<sc-if value="{{ ctAnalise }}"><span style="width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #E0A106"></span></sc-if>
-<sc-if value="{{ ctConcluida }}"><span style="width:20px;height:20px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg></span></sc-if>
-<span style="flex:1;width:1.5px;background:#D7DBE0"></span></div><div style="padding-bottom:16px"><div style="font:600 15px/1.3 Inter;color:#14181F">Em análise</div>
-<sc-if value="{{ ctRecebida }}"><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Começa em até 1 dia útil</div></sc-if>
-<sc-if value="{{ ctAnalise }}"><div style="font:400 13px/1.45 Inter;color:#8A6404;margin-top:2px">Etapa atual · resposta até 10 de agosto</div></sc-if>
-<sc-if value="{{ ctConcluida }}"><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">4 a 6 de agosto</div></sc-if>
-</div></div>
-<div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center;flex:none">
-<sc-if value="{{ ctConcluida }}"><span style="width:20px;height:20px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.3 5 8.8 9.5 3.6"></path></svg></span></sc-if>
-<sc-if value="{{ ctRecebida }}"><span style="width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid #D7DBE0"></span></sc-if>
-<sc-if value="{{ ctAnalise }}"><span style="width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid #D7DBE0"></span></sc-if>
-</div><div><div style="font:600 15px/1.3 Inter;color:#14181F">Concluída</div>
-<sc-if value="{{ ctConcluida }}"><div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">6 de agosto · valor devolvido ao seu limite</div></sc-if>
-</div></div>
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin-bottom:14px">ANDAMENTO</div>
+<sc-for list="{{ ctPassos }}" as="p" hint-placeholder-count="4">
+<div style="display:flex;gap:12px">
+<div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:22px;height:22px;border-radius:50%;background:{{ p.bg }};border:1.5px solid {{ p.borda }}"></span><span style="flex:1;width:2px;background:{{ p.linha }}"></span></div>
+<div style="flex:1;padding-bottom:16px"><div style="font:600 15px/1.35 Inter;color:{{ p.tcor }}">{{ p.t }}</div><div style="font:400 13px/1.45 Inter;color:{{ p.xcor }};margin-top:2px">{{ p.x }}</div></div>
 </div>
+</sc-for>
 </div>
 
-<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
-<div style="font:600 15px/1.35 Inter;color:#14181F;margin-bottom:8px">Enquanto isso</div>
-<div style="font:400 13px/1.5 Inter;color:#4A5160">Os recebíveis comprometidos com esta compra seguem reservados. Você pode enviar documentos ou informações extras a qualquer momento, e isso ajuda a análise.</div>
+<sc-if value="{{ ctTemResultado }}">
+<button onClick="{{ go.ctResultado }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer;margin-top:16px">Ver resultado da contestação</button>
+</sc-if>
+<div style="background:#F5F6F8;border:1px solid #D7DBE0;border-radius:8px;padding:12px 14px;margin-top:12px"><div style="font:400 13px/1.5 Inter;color:#4A5160">Os recebíveis vinculados a esta compra seguem reservados durante a análise. O limite será atualizado conforme o processamento da contestação.</div></div>
+<button onClick="{{ ctAjuda }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Falar com atendimento</button>
 </div>
-<button onClick="{{ go.ajuda }}" style="width:100%;height:48px;margin-top:16px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer" style-hover="background:#fff">Enviar mais informações</button>
+</sc-if>
+
+<sc-if value="{{ is_ctMaisInfo }}">
+<div data-screen-label="CT11 Precisamos de mais informacoes" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<h1 style="font:700 22px/1.3 Inter;color:#14181F;margin:0 0 4px">Precisamos de mais informações</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 12px;text-wrap:pretty">Para continuar a análise desta contestação, precisamos de informações adicionais.</p>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">DOCUMENTO SOLICITADO</div>
+<div style="font:600 15px/1.35 Inter;color:#14181F;margin-top:6px">Comprovante de cancelamento</div>
+<div style="font:400 13px/1.45 Inter;color:#4A5160;margin-top:2px">Protocolo {{ ctProto }} · {{ ctNome }}</div>
+</div>
+<sc-if value="{{ ctDocEnviado }}">
+<div style="display:flex;gap:10px;align-items:center;background:#EAF5EF;border:1px solid #C6E4D3;border-radius:12px;padding:14px 16px;margin-top:12px"><span style="width:28px;height:28px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><div><div style="font:600 15px/1.35 Inter;color:#14181F">Documento recebido</div><div style="font:400 13px/1.45 Inter;color:#166B44;margin-top:2px">Sua contestação voltou para análise.</div></div></div>
+</sc-if>
+<div style="flex:1;min-height:20px"></div>
+<sc-if value="{{ ctDocPendente }}">
+<button onClick="{{ ctEnviarDoc }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Enviar documento</button>
+<div style="font:400 12px/1.5 Inter;color:#4A5160;text-align:center;margin-top:10px">Nesta POC o envio do arquivo é representativo.</div>
+</sc-if>
+<sc-if value="{{ ctDocEnviado }}">
+<button onClick="{{ go.ctAcomp }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer">Voltar para a contestação</button>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ is_ctResultado }}">
+<div data-screen-label="CT12 Resultado da contestacao" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px;display:flex;flex-direction:column">
+<sc-if value="{{ ctAprovada }}">
+<div style="width:56px;height:56px;border-radius:50%;background:#1E8E5A;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#14181F;margin:20px 0 8px">Contestação aprovada</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 16px;text-wrap:pretty">A análise desta compra foi concluída a seu favor.</p>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">VALOR CONTESTADO</div>
+<div style="font:700 28px/1.2 Inter;color:#0B2545;margin-top:6px">{{ ctContestado }}</div>
+<div style="height:1px;background:#F5F6F8;margin:14px 0"></div>
+<div style="font:400 13px/1.5 Inter;color:#4A5160">Os ajustes financeiros serão refletidos conforme o processamento da operação.</div>
+</div>
+</sc-if>
+<sc-if value="{{ ctNaoAprovada }}">
+<div style="width:56px;height:56px;border-radius:16px;background:#F5F6F8;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5M12 15.9h.01"></path></svg></div>
+<h1 style="font:700 28px/1.2 Inter;color:#14181F;margin:20px 0 8px">Contestação não aprovada</h1>
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 16px;text-wrap:pretty">A análise foi concluída e não foi possível aceitar esta contestação.</p>
+</sc-if>
+<sc-if value="{{ ctDetAberto }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Compra</span><span style="font:600 15px Inter;color:#14181F;text-align:right">{{ ctNome }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Valor contestado</span><span style="font:600 15px Inter;color:#14181F">{{ ctContestado }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Motivo informado</span><span style="font:600 15px Inter;color:#14181F;text-align:right">{{ ctMotivoTxt }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Protocolo</span><span style="font:600 15px Inter;color:#14181F">{{ ctProto }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px"><span style="font:400 15px Inter;color:#4A5160">Comprovantes</span><span style="font:600 15px Inter;color:#14181F">{{ ctArquivosTxt }}</span></div>
+</div>
+</div>
+</sc-if>
+<div style="flex:1;min-height:20px"></div>
+<sc-if value="{{ ctNovaViaDisp }}">
+<button onClick="{{ go.cartaoVirtual }}" style="width:100%;height:48px;border-radius:8px;border:0;background:#0B2545;color:#fff;font:600 15px Inter;cursor:pointer;margin-bottom:8px">Ver novo cartão virtual</button>
+</sc-if>
+<button onClick="{{ ctToggleDet }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer">{{ ctTxtDetalhes }}</button>
+<sc-if value="{{ ctNaoAprovada }}">
+<button onClick="{{ ctAjuda }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Falar com atendimento</button>
+</sc-if>
+<sc-if value="{{ ctAprovada }}">
+<button onClick="{{ go.home }}" style="width:100%;height:48px;border-radius:8px;border:0;background:transparent;color:#0B2545;font:600 15px Inter;cursor:pointer;margin-top:8px">Voltar ao início</button>
+</sc-if>
 </div>
 </sc-if>
 
@@ -1809,10 +2023,18 @@ const META = {
   compraSuspeita: {h: 'std', t: 'Confirmação de segurança', b: 'notificacoes'},
   atividade: {h: 'std', t: 'Atividade', nav: 'ativ', b: 'home'},
   compraDet: {h: 'std', t: 'Detalhe da compra', b: 'atividade'},
-  contestaConfirma: {h: 'std', t: 'Não reconheço', b: 'compraDet'},
-  contestaSeguranca: {h: 'std', t: 'Proteger seu cartão', b: 'contestaConfirma'},
-  contestaAberta: {h: 'none', dark: true},
-  contestaStatus: {h: 'std', t: 'Contestação', b: 'compraDet'},
+  ctTipo: {h: 'std', t: 'Contestar compra', b: 'compraDet'},
+  ctFraude: {h: 'std', t: 'Compra não reconhecida', b: 'ctTipo'},
+  ctBloqueio: {h: 'std', t: 'Cartão bloqueado', b: 'ctFraude'},
+  ctMotivo: {h: 'std', t: 'Contestar compra', b: 'ctTipo'},
+  ctValor: {h: 'std', t: 'Valor contestado', b: 'ctMotivo'},
+  ctDescricao: {h: 'std', t: 'Descrição do problema', b: 'ctValor'},
+  ctComprovantes: {h: 'std', t: 'Comprovantes', b: 'ctDescricao'},
+  ctRevisao: {h: 'std', t: 'Revisar contestação', b: 'ctComprovantes'},
+  ctProtocolo: {h: 'none', dark: true},
+  ctAcomp: {h: 'std', t: 'Sua contestação', b: 'compraDet'},
+  ctMaisInfo: {h: 'std', t: 'Enviar informações', b: 'ctAcomp'},
+  ctResultado: {h: 'std', t: 'Resultado da contestação', b: 'ctAcomp'},
   cartao: {h: 'std', t: 'Cartão', nav: 'cartao', b: 'home'},
   cartaoVirtual: {h: 'std', t: 'Cartão virtual', b: 'cartao'},
   cartaoLimite: {h: 'std', t: 'Limites do cartão', b: 'cartao'},
@@ -1859,7 +2081,11 @@ class Component extends DCLogic {
     antecipAuto: true, filtro: 'todos', filtroAdq: 'todas', pctAgenda: 60,
     bloqueado: false, online: true, dadosVisiveis: false, cvvVisivel: false,
     prefLimite: 'maximo', pedirConfirma: true, custoMax: 50,
-    obResultado: 'aprovado', contesta: 'recebida', abaAtiv: 'tudo'
+    obResultado: 'aprovado', abaAtiv: 'tudo',
+    ctAberta: false, ctTipoSel: null, ctMotivo: null, ctValorTipo: 'total', ctParcial: 0,
+    ctDesc: '', ctArquivos: [], ctStatus: 'recebida', ctDocEnviado: false, ctDetAberto: false,
+    ctBloqSeg: false, ctNovaVia: 'nenhuma', ctProto: '#EV123456',
+    ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}
   };
   scEl = null;
   setScEl = el => { this.scEl = el; };
@@ -1950,9 +2176,12 @@ class Component extends DCLogic {
       obAprovado: () => this.nav({obResultado: 'aprovado', tela: 'obResultado', pilha: ['obAnalise']}),
       obPendente: () => this.nav({obResultado: 'pendente', tela: 'obResultado', pilha: ['obAnalise']}),
       obAnalise: () => this.nav({obResultado: 'analise', tela: 'obResultado', pilha: ['obAnalise']}),
-      ctRecebida: () => this.nav({contesta: 'recebida', tela: 'contestaStatus', pilha: ['compraDet']}),
-      ctAnalise: () => this.nav({contesta: 'analise', tela: 'contestaStatus', pilha: ['compraDet']}),
-      ctConcluida: () => this.nav({contesta: 'concluida', tela: 'contestaStatus', pilha: ['compraDet']})
+      ctRecebida: () => this.nav({ctAberta: true, ctStatus: 'recebida', ctMotivo: 'duplicada', ctValorTipo: 'total', ctArquivos: ['comprovante_cancelamento.pdf'], ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'ctAcomp', pilha: ['compraDet']}),
+      ctAnalise: () => this.nav({ctAberta: true, ctStatus: 'bandeira', ctMotivo: 'duplicada', ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'ctAcomp', pilha: ['compraDet']}),
+      ctConcluida: () => this.nav({ctAberta: true, ctStatus: 'aprovada', ctMotivo: 'duplicada', ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'ctResultado', pilha: ['ctAcomp']}),
+      ctMaisInfo: () => this.nav({ctAberta: true, ctStatus: 'maisInfo', ctDocEnviado: false, ctMotivo: 'estorno', ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'ctAcomp', pilha: ['compraDet']}),
+      ctNaoAprovada: () => this.nav({ctAberta: true, ctStatus: 'naoAprovada', ctMotivo: 'naoRecebido', ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'ctResultado', pilha: ['ctAcomp']}),
+      ctNovaVia: () => this.nav({ctAberta: true, ctStatus: 'aprovada', ctMotivo: 'fraude', ctBloqSeg: true, bloqueado: true, ctNovaVia: 'disponivel', ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}, tela: 'cartao', pilha: []})
     };
     v.cenNome = NOMES[s.cen] || 'Recebíveis encontrados';
     v.taxaTxt = this.taxa().toLocaleString('pt-BR', {minimumFractionDigits: 2}) + '%';
@@ -1969,7 +2198,7 @@ class Component extends DCLogic {
     v.navAtiv = m.nav === 'ativ' ? '#0B2545' : '#4A5160';
     v.voltar = this.voltar;
     v.scRef = this.setScEl;
-    v.reiniciar = () => this.nav({tela: 'splash', pilha: [], compra: null, cen: 'ok', cartaoStatus: 'ativo', valor: 5000, otp: '', toast: null, bloqueado: false, dadosVisiveis: false, prefLimite: 'maximo'});
+    v.reiniciar = () => this.nav({tela: 'splash', pilha: [], compra: null, cen: 'ok', cartaoStatus: 'ativo', valor: 5000, otp: '', toast: null, bloqueado: false, dadosVisiveis: false, prefLimite: 'maximo', ctAberta: false, ctStatus: 'recebida', ctBloqSeg: false, ctNovaVia: 'nenhuma', ctDocEnviado: false, ctArquivos: [], ctDesc: '', ctMotivo: null, ctValorTipo: 'total', ctParcial: 0, ctDetAberto: false, ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}});
     v.telaAtual = 'Tela: ' + (m.t || s.tela);
 
     v.toast = !!s.toast;
@@ -1984,7 +2213,8 @@ class Component extends DCLogic {
       verDados: {t: 'Confirme que é você', x: 'Os dados do cartão são sensíveis. Use a biometria para vê-los.', c: 'Usar biometria', ok: () => this.setState({dadosVisiveis: true, sheet: null})},
       bloqueio: {t: 'Confirme que é você', x: 'Alterar o bloqueio do cartão pede confirmação de identidade.', c: 'Usar biometria', ok: () => this.setState(p => ({bloqueado: !p.bloqueado, sheet: null, toast: {t: p.bloqueado ? 'Cartão desbloqueado' : 'Cartão bloqueado', x: p.bloqueado ? 'Você já pode usar o cartão nas suas compras.' : 'Nenhuma compra será aprovada até você desbloquear.'}}))},
       pref: {t: 'Confirme que é você', x: 'Mudar como seu limite é usado pede confirmação de identidade.', c: 'Usar biometria', ok: () => { this.setState({sheet: null}); v.salvarPref(); }},
-      online: {t: 'Confirme esta compra', x: 'A loja pediu uma confirmação extra. Use a biometria para aprovar.', c: 'Confirmar compra', ok: () => this.nav({sheet: null, tela: 'aprovada', pilha: []})}
+      online: {t: 'Confirme esta compra', x: 'A loja pediu uma confirmação extra. Use a biometria para aprovar.', c: 'Confirmar compra', ok: () => this.nav({sheet: null, tela: 'aprovada', pilha: []})},
+      ctEnvio: {t: 'Confirme o envio', x: 'Enviar uma contestação pede confirmação de identidade.', c: 'Usar biometria', ok: () => this.nav({sheet: null, ctAberta: true, ctStatus: 'recebida', tela: 'ctProtocolo', pilha: ['ctRevisao']})}
     };
     const sh = s.sheet ? sheets[s.sheet] : null;
     v.sheetBio = !!sh;
@@ -2074,11 +2304,98 @@ class Component extends DCLogic {
     v.obEmAnalise = s.obResultado === 'analise';
     v.irObAnalise = () => { this.ir('obAnalise'); this.a = setTimeout(() => this.nav({tela: 'obResultado', pilha: ['obAnalise']}), 2400); };
     // contestação
-    v.ctRecebida = s.contesta === 'recebida';
-    v.ctAnalise = s.contesta === 'analise';
-    v.ctConcluida = s.contesta === 'concluida';
-    v.abrirContesta = () => this.nav({contesta: 'recebida', bloqueado: true, tela: 'contestaAberta', pilha: ['compraDet']});
-    v.abrirContestaSemBloqueio = () => this.nav({contesta: 'recebida', tela: 'contestaAberta', pilha: ['compraDet']});
+    const CT_MOT = {fraude: 'Não reconheço esta compra', duplicada: 'Cobrança duplicada', valorErrado: 'Valor incorreto', naoRecebido: 'Produto ou serviço não recebido', estorno: 'Estorno não recebido', outro: 'Outro problema com a compra'};
+    const alvo = s.ctAlvo;
+    const ctVal = s.ctValorTipo === 'parcial' ? Math.min(Math.max(0, s.ctParcial), alvo.valor) : alvo.valor;
+    v.ctNome = alvo.nome;
+    v.ctValor = F(alvo.valor);
+    v.ctData = alvo.data;
+    v.ctFinal = alvo.final;
+    v.ctContestado = F(ctVal);
+    v.ctMotivoTxt = CT_MOT[s.ctMotivo] || 'Não informado';
+    v.ctDesc = s.ctDesc;
+    v.ctDescTxt = s.ctDesc ? s.ctDesc : 'Sem descrição informada';
+    v.ctProto = s.ctProto;
+    v.ctAberta = s.ctAberta;
+    v.ctMotivos = [
+      {k: 'duplicada', label: 'Fui cobrado mais de uma vez'},
+      {k: 'valorErrado', label: 'O valor está incorreto'},
+      {k: 'naoRecebido', label: 'Não recebi o produto ou serviço'},
+      {k: 'estorno', label: 'Cancelei, mas não recebi o estorno'},
+      {k: 'outro', label: 'Outro problema com a compra'}
+    ].map(mo => ({label: mo.label, sel: () => this.ir('ctValor', {ctMotivo: mo.k})}));
+    v.ctIniciar = () => this.ir('ctTipo', {ctTipoSel: null, ctMotivo: null, ctValorTipo: 'total', ctParcial: 0, ctDesc: '', ctArquivos: [], ctDetAberto: false, ctAlvo: {nome: 'Softeq Equipamentos', valor: c ? c.valor : s.valor, data: '3 de agosto de 2026', final: '5432'}});
+    v.ctEscolherFraude = () => this.ir('ctFraude', {ctTipoSel: 'fraude', ctMotivo: 'fraude', ctValorTipo: 'total'});
+    v.ctEscolherProblema = () => this.ir('ctMotivo', {ctTipoSel: 'problema'});
+    v.ctConfirmarFraude = () => this.ir('ctBloqueio', {ctBloqSeg: true, bloqueado: true, ctNovaVia: 'analise'});
+    v.ctEhParcial = s.ctValorTipo === 'parcial';
+    v.ctValorTotal = () => this.setState({ctValorTipo: 'total'});
+    v.ctValorParcial = () => this.setState({ctValorTipo: 'parcial', ctParcial: s.ctParcial > 0 ? s.ctParcial : Math.round(alvo.valor / 2 * 100) / 100});
+    v.ctSetParcial = e => this.setState({ctParcial: Number(String(e.target.value).replace(/[^0-9]/g, '')) / 100});
+    v.ctParcialInput = s.ctParcial.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    v.ctParcialInvalido = s.ctValorTipo === 'parcial' && (s.ctParcial <= 0 || s.ctParcial > alvo.valor);
+    v.ctBordaTotal = s.ctValorTipo === 'total' ? '#0B2545' : '#D7DBE0';
+    v.ctBordaParcial = s.ctValorTipo === 'parcial' ? '#0B2545' : '#D7DBE0';
+    v.ctTracoTotal = s.ctValorTipo === 'total' ? '1.5px' : '1px';
+    v.ctTracoParcial = s.ctValorTipo === 'parcial' ? '1.5px' : '1px';
+    v.ctDotTotal = s.ctValorTipo === 'total' ? '#0B2545' : 'transparent';
+    v.ctDotParcial = s.ctValorTipo === 'parcial' ? '#0B2545' : 'transparent';
+    v.ctBordaCampo = v.ctParcialInvalido ? '#C4372B' : '#0B2545';
+    v.ctFundoSeguir = v.ctParcialInvalido ? '#D7DBE0' : '#0B2545';
+    v.ctSeguirValor = () => { if (!v.ctParcialInvalido) this.ir('ctDescricao'); };
+    v.ctSetDesc = e => this.setState({ctDesc: e.target.value});
+    v.ctArquivos = s.ctArquivos.map((nome, i) => ({nome: nome, remover: () => this.setState(p => ({ctArquivos: p.ctArquivos.filter((x, j) => j !== i)}))}));
+    v.ctTemArquivos = s.ctArquivos.length > 0;
+    v.ctArquivosTxt = s.ctArquivos.length === 0 ? 'Nenhum arquivo anexado' : (s.ctArquivos.length === 1 ? '1 arquivo anexado' : s.ctArquivos.length + ' arquivos anexados');
+    v.ctAddArquivo = () => this.setState(p => ({ctArquivos: p.ctArquivos.concat([p.ctArquivos.length % 2 === 0 ? 'comprovante_cancelamento.pdf' : 'conversa_fornecedor.jpg'])}));
+    v.ctEnviar = () => this.setState({sheet: 'ctEnvio'});
+    v.ctAjuda = () => this.ir('ajuda');
+    v.ctPedeInfo = s.ctStatus === 'maisInfo';
+    v.ctAprovada = s.ctStatus === 'aprovada';
+    v.ctNaoAprovada = s.ctStatus === 'naoAprovada';
+    v.ctTemResultado = v.ctAprovada || v.ctNaoAprovada;
+    v.ctStatusTxt = {recebida: 'Contestação recebida', analise: 'Em análise', bandeira: 'Em análise pela bandeira', maisInfo: 'Precisamos de mais informações', aprovada: 'Contestação aprovada', naoAprovada: 'Contestação não aprovada'}[s.ctStatus] || 'Em análise';
+    v.ctDocEnviado = s.ctDocEnviado;
+    v.ctDocPendente = !s.ctDocEnviado;
+    v.ctEnviarDoc = () => this.setState({ctDocEnviado: true, ctStatus: 'analise', toast: {t: 'Documento recebido', x: 'Sua contestação voltou para análise.'}});
+    v.ctDetAberto = s.ctDetAberto;
+    v.ctTxtDetalhes = s.ctDetAberto ? 'Ocultar detalhes' : 'Ver detalhes';
+    v.ctToggleDet = () => this.setState(p => ({ctDetAberto: !p.ctDetAberto}));
+    v.ctBloqSeg = s.ctBloqSeg;
+    v.ctNovaViaAnalise = s.ctNovaVia === 'analise';
+    v.ctNovaViaDisp = s.ctNovaVia === 'disponivel';
+    const passoIdx = {recebida: 0, analise: 1, maisInfo: 1, bandeira: 2, aprovada: 3, naoAprovada: 3}[s.ctStatus];
+    const fimT = v.ctAprovada ? 'Contestação aprovada' : (v.ctNaoAprovada ? 'Contestação não aprovada' : 'Conclusão da análise');
+    const fimX = v.ctAprovada ? 'A análise foi concluída a seu favor.' : (v.ctNaoAprovada ? 'A análise foi concluída e a contestação não foi aceita.' : 'Avisamos assim que a análise terminar.');
+    v.ctPassos = [
+      {t: 'Contestação recebida', x: 'Recebemos sua solicitação.'},
+      {t: 'Em análise', x: 'Estamos verificando as informações.'},
+      {t: 'Em análise pela bandeira', x: 'A contestação segue em avaliação.'},
+      {t: fimT, x: fimX}
+    ].map((p, i) => {
+      const feito = i < passoIdx || (i === 3 && v.ctTemResultado);
+      const atual = i === passoIdx && !feito;
+      let bg = '#FFFFFF';
+      if (feito) bg = (i === 3 && v.ctNaoAprovada) ? '#4A5160' : '#1E8E5A';
+      else if (atual) bg = '#17A2B8';
+      return {
+        t: p.t, x: p.x, bg: bg,
+        borda: (feito || atual) ? 'transparent' : '#D7DBE0',
+        tcor: (feito || atual) ? '#14181F' : '#A9BACE',
+        xcor: (feito || atual) ? '#4A5160' : '#A9BACE',
+        linha: i < 3 ? '#D7DBE0' : 'transparent'
+      };
+    });
+    v.ctAbrirDental = () => (s.ctAberta ? this.ir('ctAcomp') : this.ir('ctTipo', {ctTipoSel: null, ctMotivo: null, ctValorTipo: 'total', ctParcial: 0, ctDesc: '', ctArquivos: [], ctDetAberto: false, ctAlvo: {nome: 'Fornecedor Dental Brasil', valor: 1280, data: '25 de agosto de 2026', final: '4821'}}));
+    v.dentalLegenda = s.ctAberta ? v.ctStatusTxt : 'Compra aprovada · 25 AGO';
+    v.dentalFundo = s.ctAberta ? '#FDF3DA' : '#F5F6F8';
+    v.dentalTraco = s.ctAberta ? '#B07F05' : '#0B2545';
+    v.ctNotifs = [
+      {t: 'Contestação recebida', x: 'Recebemos sua contestação da compra de ' + F(alvo.valor) + '.'},
+      {t: 'Atualização da contestação', x: 'Sua contestação está em análise.'},
+      {t: 'Precisamos de informações', x: 'Envie um documento para continuarmos a análise.'},
+      {t: 'Contestação concluída', x: 'A análise da sua contestação foi finalizada.'}
+    ].map(n => ({t: n.t, x: n.x, abrir: () => this.ir('ctAcomp')}));
     // cartão virtual
     v.cvvVisivel = s.cvvVisivel;
     v.toggleCvv = () => this.setState(p => ({cvvVisivel: !p.cvvVisivel}));
@@ -2089,11 +2406,13 @@ class Component extends DCLogic {
     // abas de atividade
     v.abaAtiv = s.abaAtiv;
     v.setAba = {};
-    ['tudo', 'compras', 'receb', 'antecip'].forEach(a => { v.setAba['a_' + a] = () => this.setState({abaAtiv: a}); });
+    ['tudo', 'compras', 'receb', 'antecip', 'contest'].forEach(a => { v.setAba['a_' + a] = () => this.setState({abaAtiv: a}); });
     v.ab_tudo = s.abaAtiv === 'tudo';
     v.ab_compras = s.abaAtiv === 'compras';
     v.ab_receb = s.abaAtiv === 'receb';
     v.ab_antecip = s.abaAtiv === 'antecip';
+    v.ab_contest = s.abaAtiv === 'contest';
+    v.verDental = ['tudo', 'compras', 'contest'].indexOf(s.abaAtiv) >= 0 && (s.abaAtiv !== 'contest' || s.ctAberta);
     v.verCompras = s.abaAtiv === 'tudo' || s.abaAtiv === 'compras';
     v.verReceb = s.abaAtiv === 'tudo' || s.abaAtiv === 'receb';
     v.verAntecip = s.abaAtiv === 'tudo' || s.abaAtiv === 'antecip';
@@ -2101,8 +2420,8 @@ class Component extends DCLogic {
     v.hojeAntecip = v.verAntecip && v.temCusto && !!c;
     v.grupoHoje = v.hojeCompra || v.hojeAntecip || v.verReceb;
     v.grupoAgo2 = v.verCompras || v.verReceb;
-    v.ativVazio = !v.grupoHoje && !v.grupoAgo2;
-    v.abaNome = {tudo: 'Tudo', compras: 'Compras EvoluCard', receb: 'Recebíveis', antecip: 'Antecipações'}[s.abaAtiv] || 'Tudo';
+    v.ativVazio = !v.grupoHoje && !v.grupoAgo2 && !v.verDental;
+    v.abaNome = {tudo: 'Tudo', compras: 'Compras EvoluCard', receb: 'Recebíveis', antecip: 'Antecipações', contest: 'Contestações'}[s.abaAtiv] || 'Tudo';
 
     // campo monetário e parcelamento
     v.setValor = e => { const n = Number(String(e.target.value).replace(/[^0-9]/g, '')) / 100; this.setState({valor: n}); };
