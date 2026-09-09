@@ -1,0 +1,92 @@
+/* muiEVO — Typography tokens
+ * Montserrat across the board. Scale mirrors the MUI theme variants
+ * (base font-size 16px → rem). Button/Tab keep textTransform: none.
+ */
+:root {
+  --evo-font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Weights */
+  --evo-fw-light: 300; /* @kind font */
+  --evo-fw-regular: 400; /* @kind font */
+  --evo-fw-medium: 500; /* @kind font */
+  --evo-fw-semibold: 600; /* @kind font */
+  --evo-fw-bold: 700; /* @kind font */
+
+  /* ---- h1 ---- */
+  --evo-h1-size: 1.75rem;     /* 28px */
+  --evo-h1-weight: 400; /* @kind font */
+  --evo-h1-line: 1.143; /* @kind other */
+  --evo-h1-spacing: -0.01562em; /* @kind other */
+
+  /* ---- h2 ---- */
+  --evo-h2-size: 1.375rem;    /* 22px */
+  --evo-h2-weight: 600; /* @kind font */
+  --evo-h2-line: 1.091; /* @kind other */
+  --evo-h2-spacing: -0.00833em; /* @kind other */
+
+  /* ---- h3 ---- */
+  --evo-h3-size: 1.375rem;    /* 22px */
+  --evo-h3-weight: 300; /* @kind font */
+  --evo-h3-line: 1.091; /* @kind other */
+  --evo-h3-spacing: 0em; /* @kind other */
+
+  /* ---- h4 ---- */
+  --evo-h4-size: 1.125rem;    /* 18px */
+  --evo-h4-weight: 600; /* @kind font */
+  --evo-h4-line: 1.222; /* @kind other */
+  --evo-h4-spacing: 0.00735em; /* @kind other */
+
+  /* ---- h5 ---- */
+  --evo-h5-size: 1.125rem;    /* 18px */
+  --evo-h5-weight: 300; /* @kind font */
+  --evo-h5-line: 1.222; /* @kind other */
+  --evo-h5-spacing: 0em; /* @kind other */
+
+  /* ---- h6 ---- */
+  --evo-h6-size: 0.875rem;    /* 14px */
+  --evo-h6-weight: 600; /* @kind font */
+  --evo-h6-line: 1.222; /* @kind other */
+  --evo-h6-spacing: 0.0075em; /* @kind other */
+
+  /* ---- subtitle1 ---- */
+  --evo-subtitle1-size: 0.875rem;   /* 14px */
+  --evo-subtitle1-weight: 700; /* @kind font */
+  --evo-subtitle1-line: 1.428; /* @kind other */
+  --evo-subtitle1-spacing: 0.00938em; /* @kind other */
+
+  /* ---- subtitle2 ---- */
+  --evo-subtitle2-size: 0.75rem;    /* 12px */
+  --evo-subtitle2-weight: 700; /* @kind font */
+  --evo-subtitle2-line: 1.5; /* @kind other */
+  --evo-subtitle2-spacing: 0.00714em; /* @kind other */
+
+  /* ---- body1 (default body) ---- */
+  --evo-body1-size: 0.875rem;   /* 14px */
+  --evo-body1-weight: 400; /* @kind font */
+  --evo-body1-line: 1.429; /* @kind other */
+  --evo-body1-spacing: 0.00938em; /* @kind other */
+
+  /* ---- body2 ---- */
+  --evo-body2-size: 0.75rem;    /* 12px */
+  --evo-body2-weight: 400; /* @kind font */
+  --evo-body2-line: 1.5; /* @kind other */
+  --evo-body2-spacing: 0.01071em; /* @kind other */
+
+  /* ---- button ---- */
+  --evo-button-size: 0.75rem;   /* 12px */
+  --evo-button-weight: 700; /* @kind font */
+  --evo-button-line: 1.5; /* @kind other */
+  --evo-button-spacing: 0.06em; /* @kind other */
+
+  /* ---- caption ---- */
+  --evo-caption-size: 0.688rem; /* 11px */
+  --evo-caption-weight: 400; /* @kind font */
+  --evo-caption-line: 1.454; /* @kind other */
+  --evo-caption-spacing: 0.03333em; /* @kind other */
+
+  /* ---- overline ---- */
+  --evo-overline-size: 0.75rem; /* 12px */
+  --evo-overline-weight: 400; /* @kind font */
+  --evo-overline-line: 1.5; /* @kind other */
+  --evo-overline-spacing: 0.08333em; /* @kind other */
+}

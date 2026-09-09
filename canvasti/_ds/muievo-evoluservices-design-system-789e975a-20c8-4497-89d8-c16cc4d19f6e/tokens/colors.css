@@ -1,0 +1,80 @@
+/* muiEVO — Color tokens
+ * Mirrors the EvoluServices MUI theme palette (theme.ts + Theme/Palette docs).
+ * Base values are the raw palette; semantic aliases map them to roles.
+ */
+:root {
+  /* ---- Primary (EvoluServices teal) ---- */
+  --evo-primary-extralight: #E4F1F3;
+  --evo-primary-light: #A5CFD9;
+  --evo-primary-main: #1E879F;
+  --evo-primary-dark: #125868;
+  --evo-primary-contrast: #FFFFFF;
+
+  /* ---- Secondary (EvoluServices orange) ---- */
+  --evo-secondary-main: #E97424;
+  --evo-secondary-contrast: #FFFFFF;
+
+  /* ---- Error / destructive (red) ---- */
+  --evo-error-extralight: #FCEEEE;
+  --evo-error-light: #F5C7C7;
+  --evo-error-main: #E57373;
+  --evo-error-dark: #941C1C;
+  --evo-error-contrast: #FFFFFF;
+
+  /* ---- Warning (amber) ---- */
+  --evo-warning-extralight: #FDF4E6;
+  --evo-warning-light: #F9DAAC;
+  --evo-warning-main: #F0A330;
+  --evo-warning-dark: #A4670C;
+  --evo-warning-contrast: #FFFFFF;
+
+  /* ---- Success (green) ---- */
+  --evo-success-extralight: #ECF5EC;
+  --evo-success-light: #BFDEC1;
+  --evo-success-main: #5FAD63;
+  --evo-success-dark: #3D5C3F;
+  --evo-success-contrast: #FFFFFF;
+
+  /* ---- Info (== primary) ---- */
+  --evo-info-extralight: #E4F1F3;
+  --evo-info-light: #A5CFD9;
+  --evo-info-main: #1E879F;
+  --evo-info-dark: #125868;
+  --evo-info-contrast: #FFFFFF;
+
+  /* ---- Neutrals / surfaces ---- */
+  --evo-bg-default: #DCE2E6;
+  --evo-bg-paper: #FFFFFF;
+  --evo-bg-extralight: rgba(0, 0, 0, 0.06);
+  --evo-paperdark: #424242;
+
+  /* ---- Text on light surfaces ---- */
+  --evo-text-primary: rgba(0, 0, 0, 0.87);
+  --evo-text-secondary: rgba(0, 0, 0, 0.60);
+  --evo-text-disabled: rgba(0, 0, 0, 0.38);
+  --evo-text-on-dark: #FFFFFF;
+
+  /* ---- Lines & states ---- */
+  --evo-divider: rgba(0, 0, 0, 0.12);
+  --evo-action-hover: rgba(0, 0, 0, 0.04);
+  --evo-action-selected: rgba(0, 0, 0, 0.08);
+  --evo-action-disabled-bg: rgba(0, 0, 0, 0.06);
+
+  /* =========================================================
+   * Semantic aliases — prefer these in product UI
+   * ========================================================= */
+  --surface-app: var(--evo-bg-default);
+  --surface-card: var(--evo-bg-paper);
+  --surface-sunken: var(--evo-bg-extralight);
+  --surface-inverse: var(--evo-paperdark);
+
+  --text-body: var(--evo-text-primary);
+  --text-muted: var(--evo-text-secondary);
+  --text-disabled: var(--evo-text-disabled);
+  --text-inverse: var(--evo-text-on-dark);
+
+  --border-default: var(--evo-divider);
+  --accent: var(--evo-primary-main);
+  --accent-strong: var(--evo-primary-dark);
+  --accent-soft: var(--evo-primary-extralight);
+}

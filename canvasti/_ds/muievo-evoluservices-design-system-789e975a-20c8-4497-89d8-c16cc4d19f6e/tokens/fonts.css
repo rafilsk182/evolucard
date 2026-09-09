@@ -1,0 +1,27 @@
+/* muiEVO — Webfont declarations
+ * Montserrat is the EvoluServices product typeface (theme uses
+ * var(--font-montserrat, Montserrat)). Loaded from Google Fonts.
+ * NOTE: substitute the self-hosted EvoluServices font files here if available.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* Base reset so consumers inherit the typeface + body colour. */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  margin: 0;
+  font-family: var(--evo-font-family);
+  font-size: var(--evo-body1-size);
+  font-weight: var(--evo-body1-weight);
+  line-height: var(--evo-body1-line);
+  letter-spacing: var(--evo-body1-spacing);
+  color: var(--text-body);
+  background-color: var(--surface-app);
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

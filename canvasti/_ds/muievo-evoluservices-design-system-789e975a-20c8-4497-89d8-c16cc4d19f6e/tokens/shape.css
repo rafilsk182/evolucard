@@ -1,0 +1,26 @@
+/* muiEVO — Radius & elevation tokens
+ * Shape: 8px base radius; Buttons are pill-shaped (18px).
+ * Elevation: MUI exposes 25 levels but muiEVO uses only 5 in practice:
+ * 0 (most surfaces), 1 (Select menu), 6 (Menu), 8 (Snackbar), 24 (Dialog).
+ */
+:root {
+  /* Radius */
+  --evo-radius: 8px;
+  --evo-radius-sm: 4px;
+  --evo-radius-button: 18px;   /* pill */
+  --evo-radius-pill: 999px;
+
+  /* Elevation (box-shadow) */
+  --evo-elevation-0: none;
+  --evo-elevation-1: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.2);
+  --evo-elevation-6: 0px 1px 18px rgba(0, 0, 0, 0.12), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 3px 5px -1px rgba(0, 0, 0, 0.2);
+  --evo-elevation-8: 0px 3px 14px 2px rgba(0, 0, 0, 0.12), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 5px 5px -3px rgba(0, 0, 0, 0.2);
+  --evo-elevation-24: 0px 9px 46px 8px rgba(0, 0, 0, 0.12), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 11px 15px -7px rgba(0, 0, 0, 0.2);
+
+  /* Motion — MUI standard easing/durations */
+  --evo-ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --evo-ease-out: cubic-bezier(0.0, 0, 0.2, 1); /* @kind other */
+  --evo-ease-in: cubic-bezier(0.4, 0, 1, 1); /* @kind other */
+  --evo-duration-short: 150ms; /* @kind other */
+  --evo-duration-standard: 250ms; /* @kind other */
+}

@@ -1,0 +1,21 @@
+/* muiEVO — Spacing tokens
+ * 8px scale factor (MUI default). Work in the abstract scale (0.5, 1, 2, 3…)
+ * which maps to 4, 8, 16, 24… px. Spacing outside this scale is discouraged.
+ */
+:root {
+  --evo-space-unit: 8px;
+
+  --evo-space-0: 0px;
+  --evo-space-0_5: 4px;
+  --evo-space-1: 8px;
+  --evo-space-1_5: 12px;
+  --evo-space-2: 16px;
+  --evo-space-3: 24px;
+  --evo-space-4: 32px;
+  --evo-space-5: 40px;
+  --evo-space-6: 48px;
+  --evo-space-7: 56px;
+  --evo-space-8: 64px;
+  --evo-space-9: 72px;
+  --evo-space-10: 80px;
+}
