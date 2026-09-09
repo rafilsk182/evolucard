@@ -908,6 +908,14 @@
 <button onClick="{{ go.suporte }}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:#fff;padding:14px 16px;cursor:pointer;text-align:left;min-height:60px" style-hover="background:#F5F6F8"><span style="width:36px;height:36px;border-radius:10px;background:#F5F6F8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0B2545" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"></circle><path d="M8 8a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9v.4M10 13.6h.01"></path></svg></span><span style="flex:1;font:400 15px Inter;color:#14181F">Suporte</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4A5160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4l6 6-6 6"></path></svg></button>
 </div>
 
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">LIMITE DO CARTÃO</div>
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Limite atual</span><span style="font:600 15px Inter;color:#14181F">{{ limiteAtual }}</span></div>
+<div style="height:1px;background:#F5F6F8;margin:10px 0"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Limite disponível</span><span style="font:600 15px Inter;color:#14181F">{{ disponivel }}</span></div>
+<button onClick="{{ goAjustarDoCartao }}" style="width:100%;height:44px;margin-top:14px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer" style-hover="background:#F5F6F8">Ajustar limite</button>
+</div>
+
 <div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160;margin:20px 0 8px">CARTÃO FÍSICO</div>
 <sc-if value="{{ fisicoNaoSolicitado }}">
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
@@ -1040,8 +1048,8 @@
 </sc-if>
 
 <sc-if value="{{ is_recebiveis }}">
-<div data-screen-label="R1 Recebíveis do seu limite" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
-<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 14px;text-wrap:pretty">Acompanhe os valores considerados no seu EvoluCard e o que acontece com eles até a liquidação.</p>
+<div data-screen-label="R1 Recebíveis" style="min-height:100%;background:#F5F6F8;padding:16px 16px 24px">
+<p style="font:400 15px/1.5 Inter;color:#4A5160;margin:0 0 14px;text-wrap:pretty">Acompanhe os valores que compõem seu limite e o que acontece com eles até a liquidação.</p>
 
 <sc-if value="{{ recCarregando }}">
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px">
@@ -1113,6 +1121,11 @@
 <div style="font:700 22px/1.2 Inter;color:#14181F;margin:8px 0 6px">{{ recLivres }}</div>
 <div style="font:400 12px/1.45 Inter;color:#4A5160">Valor que você ainda pode usar em compras. O que não for utilizado é repassado via Pix após a liquidação.</div>
 </div>
+</div>
+
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:14px 16px;margin-top:10px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><span style="font:400 13px/1.4 Inter;color:#4A5160">Já repassados via Pix</span><span style="font:600 15px/1.2 Inter;color:#14181F;flex:none">{{ recJaRepassado }}</span></div>
+<div style="font:400 12px/1.45 Inter;color:#4A5160;margin-top:6px">Histórico de recebíveis já liquidados. Este valor não faz parte dos recebíveis vinculados hoje.</div>
 </div>
 
 <div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
@@ -1189,7 +1202,7 @@
 <div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">RECEBÍVEL</div>
 <div style="font:700 34px/1.15 Inter;color:#0B2545;margin:8px 0 14px;letter-spacing:-.02em">{{ rdValor }}</div>
 <div style="display:flex;flex-direction:column;gap:10px">
-<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Liquidação prevista</span><span style="font:600 15px Inter;color:#14181F">{{ rdData }}</span></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">{{ rdDataLabel }}</span><span style="font:600 15px Inter;color:#14181F">{{ rdData }}</span></div>
 <div style="height:1px;background:#F5F6F8"></div>
 <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Origem da agenda</span><span style="font:600 15px Inter;color:#14181F">{{ rdOrigem }}</span></div>
 <div style="height:1px;background:#F5F6F8"></div>
@@ -1213,10 +1226,14 @@
 <div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Usado em compras</span><span style="font:600 15px Inter;color:#14181F">{{ rdUsado }}</span></div>
 <div style="height:1px;background:#F5F6F8"></div>
 <div style="height:1px;background:#F5F6F8"></div>
-<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Ainda não utilizado</span><span style="font:600 15px Inter;color:#14181F">{{ rdLivre }}</span></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">{{ rdLivreLabel }}</span><span style="font:600 15px Inter;color:#14181F">{{ rdLivre }}</span></div>
+<sc-if value="{{ rdRepassado }}">
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font:400 15px Inter;color:#4A5160">Destino do valor não utilizado</span><span style="font:600 15px Inter;color:#14181F;flex:none;text-align:right">Repassado via Pix</span></div>
+</sc-if>
 </div>
 <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:#EEF0F3;margin-top:14px"><span style="width:{{ rdPctUsado }};background:#0B2545"></span><span style="flex:1;background:#17A2B8"></span></div>
-<div style="display:flex;justify-content:space-between;margin-top:8px"><span style="font:400 12px/1.3 Inter;color:#4A5160">Usado em compras</span><span style="font:400 12px/1.3 Inter;color:#4A5160">Ainda disponível</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><span style="font:400 12px/1.3 Inter;color:#4A5160">Usado em compras</span><span style="font:400 12px/1.3 Inter;color:#4A5160">{{ rdBarLabel }}</span></div>
 <sc-if value="{{ rdCtx }}">
 <div style="background:#F5F6F8;border-radius:10px;padding:12px 14px;margin-top:16px">
 <div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">NESTA COMPRA</div>
@@ -1233,6 +1250,22 @@
 <div style="font:400 13px/1.5 Inter;color:#4A5160">{{ rdLivreTxt }}</div>
 <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px"><span style="font:400 15px Inter;color:#4A5160">Status</span><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:{{ rdPbg }};flex:none"><span style="width:6px;height:6px;border-radius:50%;background:{{ rdPdot }}"></span><span style="font:600 12px/1 Inter;color:{{ rdPcor }}">{{ rdPt }}</span></span></div>
 <button onClick="{{ rdVerPix }}" style="width:100%;height:48px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 15px Inter;cursor:pointer;height:44px;font:600 13px Inter;margin-top:14px">Ver dados do Pix</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ rdRepassado }}">
+<div style="background:#fff;border:1px solid #D7DBE0;border-radius:12px;padding:16px;margin-top:12px">
+<div style="font:600 12px/1.2 Inter;letter-spacing:.04em;color:#4A5160">REPASSE VIA PIX</div>
+<div style="font:700 22px/1.2 Inter;color:#14181F;margin:8px 0 14px">{{ rdRepValor }}</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font:400 15px Inter;color:#4A5160">Status</span><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#EAF5EF;flex:none"><span style="width:6px;height:6px;border-radius:50%;background:#1E8E5A"></span><span style="font:600 12px/1 Inter;color:#166B44">Pix enviado</span></span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Data</span><span style="font:600 15px Inter;color:#14181F">{{ rdRepQuando }}</span></div>
+<div style="height:1px;background:#F5F6F8"></div>
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="font:400 15px Inter;color:#4A5160">Destino</span><span style="font:600 15px Inter;color:#14181F">Chave Pix {{ chaveMask }}</span></div>
+</div>
+<button onClick="{{ rdVerRepasse }}" style="width:100%;height:44px;border-radius:8px;border:1.5px solid #0B2545;background:#fff;color:#0B2545;font:600 13px Inter;cursor:pointer;margin-top:14px">Ver detalhes do repasse</button>
+<div style="background:#F5F6F8;border-radius:10px;padding:12px 14px;margin-top:14px"><div style="font:400 13px/1.5 Inter;color:#4A5160;text-wrap:pretty">{{ rdAjudaRepasse }}</div></div>
 </div>
 </sc-if>
 
@@ -1435,8 +1468,9 @@
 </div>
 
 <sc-if value="{{ showNav }}">
-<div style="flex:none;display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:1px solid #D7DBE0;padding:6px 4px 10px">
-<button onClick="{{ go.limite }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navLimite }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.5 11 3.75l7.5 5.75"></path><path d="M5.5 11v7.25h11V11"></path><path d="M9 18.25v-4.5h4v4.5"></path></svg><span style="font:600 12px/1 Inter;color:{{ navLimite }}">Início</span></button>
+<div style="flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid #D7DBE0;padding:6px 4px 10px">
+<button onClick="{{ go.limite }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navLimite }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.5 9 9.5l3 3 5.5-5.5"></path><path d="M13.5 7h4v4"></path><path d="M3.5 18.5h15"></path></svg><span style="font:600 12px/1 Inter;color:{{ navLimite }}">Limite</span></button>
+<button onClick="{{ go.recebiveis }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navRec }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3.5h11v15l-2.75-1.9-2.75 1.9-2.75-1.9L5.5 18.5v-15Z"></path><path d="M8.5 7.5h5M8.5 11h5"></path></svg><span style="font:600 12px/1 Inter;color:{{ navRec }}">Recebíveis</span></button>
 <button onClick="{{ go.transacoes }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navTx }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h11l-2.5-2.5M18 14.5H7l2.5 2.5"></path></svg><span style="font:600 12px/1 Inter;color:{{ navTx }}">Transações</span></button>
 <button onClick="{{ go.cartao }}" style="min-height:56px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:10px" style-hover="background:#F5F6F8"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="{{ navCartao }}" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5.5" width="16" height="11" rx="2.5"></rect><path d="M3 9.5h16"></path></svg><span style="font:600 12px/1 Inter;color:{{ navCartao }}">Cartão</span></button>
 </div>
@@ -1463,7 +1497,6 @@
 </div>
 </div>
 </sc-if>
-
 </div>
 </div>
 </div>
@@ -1508,7 +1541,7 @@ const META = {
   cartaoAcomp: {h: 'std', t: 'Acompanhar entrega', b: 'cartao'},
   seguranca: {h: 'std', t: 'Segurança', b: 'cartao'},
   suporte: {h: 'std', t: 'Suporte', b: 'cartao'},
-  recebiveis: {h: 'std', t: 'Recebíveis do seu limite', b: 'limite'},
+  recebiveis: {h: 'std', t: 'Recebíveis', b: 'limite', nav: 'rec'},
   recAjuda: {h: 'std', t: 'Entender melhor', b: 'recebiveis'},
   recDetalhe: {h: 'std', t: 'Detalhe do recebível', b: 'recebiveis'},
   recCompras: {h: 'std', t: 'Compras vinculadas', b: 'recDetalhe'},
@@ -1552,16 +1585,25 @@ const REC_FORA = [
   {origem: 'Rede', dia: '28', mes: 'SET', valor: 1850}
 ];
 
+// histórico: recebíveis que já liquidaram e saíram do limite atual.
+// NÃO entram nos 8.450 vinculados nem em nenhum total do limite.
+const REC_HIST = [
+  {id: 'h1', dia: '08', mes: 'SET', longa: '8 de setembro de 2026', valor: 1500, origem: 'Cielo', usado: 0, estado: 'repassado', hist: true, pix: 'enviado', pixValor: 1500, pixQuando: '08 SET às 14:32', compras: []},
+  {id: 'h2', dia: '09', mes: 'SET', longa: '9 de setembro de 2026', valor: 2000, origem: 'Evoluservices', usado: 1200, estado: 'liquidado', hist: true, pix: 'enviado', pixValor: 800, pixQuando: '09 SET às 09:14', compras: [{nome: 'Distribuidora São Lucas', data: '2 de setembro de 2026', valor: 800}, {nome: 'Posto Avenida', data: '4 de setembro de 2026', valor: 400}]}
+];
+const JA_REPASSADO = 2300; // 1.500 + 800, histórico independente do limite atual
+
 const BADGE = {
   limite: {bt: 'No seu limite', bbg: '#E6F4F7', bcor: '#0E6B79', bdot: '#17A2B8'},
   usado: {bt: 'Usado no EvoluCard', bbg: '#EAF5EF', bcor: '#166B44', bdot: '#1E8E5A'},
   aguardando: {bt: 'Aguardando liquidação', bbg: '#F5F6F8', bcor: '#4A5160', bdot: '#A9BACE'},
   processando_liq: {bt: 'Processando', bbg: '#FDF3DA', bcor: '#8A6404', bdot: '#E0A106'},
-  previsto: {bt: 'Repasse via Pix previsto', bbg: '#FDF3DA', bcor: '#8A6404', bdot: '#E0A106'},
-  processando: {bt: 'Pix em processamento', bbg: '#FDF3DA', bcor: '#8A6404', bdot: '#E0A106'},
+  previsto: {bt: 'Repasse previsto', bbg: '#FDF3DA', bcor: '#8A6404', bdot: '#E0A106'},
+  processando: {bt: 'Processando repasse', bbg: '#FDF3DA', bcor: '#8A6404', bdot: '#E0A106'},
   enviado: {bt: 'Pix enviado', bbg: '#EAF5EF', bcor: '#166B44', bdot: '#1E8E5A'},
   falha: {bt: 'Pix não realizado', bbg: '#FBEDEB', bcor: '#8F2A20', bdot: '#C4372B'},
-  liquidado: {bt: 'Liquidado', bbg: '#F5F6F8', bcor: '#4A5160', bdot: '#A9BACE'}
+  liquidado: {bt: 'Liquidado', bbg: '#F5F6F8', bcor: '#4A5160', bdot: '#A9BACE'},
+  repassado: {bt: 'Repassado via Pix', bbg: '#EAF5EF', bcor: '#166B44', bdot: '#1E8E5A'}
 };
 
 class Component extends DCLogic {
@@ -1638,8 +1680,10 @@ class Component extends DCLogic {
     v.titulo = m.t || '';
     v.showNav = !!m.nav;
     v.navLimite = m.nav === 'limite' ? '#0B2545' : '#4A5160';
+    v.navRec = m.nav === 'rec' ? '#0B2545' : '#4A5160';
     v.navTx = m.nav === 'tx' ? '#0B2545' : '#4A5160';
     v.navCartao = m.nav === 'cartao' ? '#0B2545' : '#4A5160';
+    v.goAjustarDoCartao = () => this.nav({tela: 'limiteAjustar', pilha: ['cartao']});
     v.voltar = this.voltar;
     v.telaAtual = 'Tela: ' + (m.t || s.tela);
     v.reiniciar = () => this.nav({
@@ -1700,6 +1744,8 @@ class Component extends DCLogic {
       recLiquidado: () => this.nav({rec: 'r2', recCtxTx: null, pixStatus: 'enviado', recEstado: 'ok', recSemLiq: false, tela: 'recDetalhe', pilha: ['recebiveis']}),
       recCompras: () => this.nav({rec: 'r4', recCtxTx: null, tela: 'recCompras', pilha: ['recebiveis', 'recDetalhe']}),
       recSemLiq: () => this.nav({rec: 'r3', recSemLiq: true, tela: 'recDetalhe', pilha: ['recebiveis']}),
+      recRepassado: () => this.nav({rec: 'h1', recCtxTx: null, recEstado: 'ok', recSemLiq: false, tela: 'recDetalhe', pilha: ['recebiveis']}),
+      recParcial: () => this.nav({rec: 'h2', recCtxTx: null, recEstado: 'ok', recSemLiq: false, tela: 'recDetalhe', pilha: ['recebiveis']}),
       recCarregando: () => this.nav({recEstado: 'carregando', tela: 'recebiveis', pilha: ['limite']}),
       recErro: () => this.nav({recEstado: 'erro', tela: 'recebiveis', pilha: ['limite']}),
       recIndisponivel: () => this.nav({recEstado: 'indisponivel', tela: 'recebiveis', pilha: ['limite']}),
@@ -1872,6 +1918,7 @@ class Component extends DCLogic {
     const dataTx = id => (TX.filter(t => t.id === id)[0] || {}).longa || '';
     const pixDe = r => (r.pix === 'dinamico' ? s.pixStatus : r.pix);
     const badgeDe = r => {
+      if (r.hist) return r.estado === 'repassado' ? BADGE.repassado : BADGE.liquidado;
       const px = pixDe(r);
       if (px === 'processando' || px === 'falha' || px === 'enviado') return BADGE[px];
       if (r.estado === 'liquidado') return BADGE.liquidado;
@@ -1891,6 +1938,8 @@ class Component extends DCLogic {
       if (achou) achou.total += r.valor; else porOrigem.push({origem: r.origem, total: r.valor});
     });
     v.recOrigens = porOrigem.map(o => ({origem: o.origem, valor: F(o.total)}));
+    v.recJaRepassado = F(JA_REPASSADO);
+    const todasRec = REC_HIST.concat(lista);
 
     v.recOk = s.recEstado === 'ok';
     v.recCarregando = s.recEstado === 'carregando';
@@ -1914,6 +1963,7 @@ class Component extends DCLogic {
       {t: 'Por que meus recebíveis aparecem no EvoluCard?', x: 'Eles são usados para calcular e sustentar seu limite de compra.'},
       {t: 'O que acontece se eu não utilizar todo o valor?', x: 'Enquanto o recebível não liquida, o valor continua disponível como limite. Após a liquidação, o que não foi utilizado pode ser enviado para você via Pix.'},
       {t: 'Por que vejo uma cessão em outra plataforma?', x: 'Alguns recebíveis podem ser formalmente vinculados ao EvoluCard para compor seu limite.'},
+      {t: 'O que significa “Repassado via Pix”?', x: 'Este recebível chegou à data de liquidação e o valor que não foi utilizado no EvoluCard foi enviado para sua chave Pix cadastrada.'},
       {t: 'As datas são sempre as mesmas?', x: 'Não. Cada recebível tem sua própria data prevista de liquidação, e o valor a repassar depende desse processamento.'}
     ];
     v.recEstadosDoc = [
@@ -1922,14 +1972,16 @@ class Component extends DCLogic {
       Object.assign({x: 'O recebível ainda chegará na data prevista.'}, BADGE.aguardando),
       Object.assign({x: 'O valor ainda disponível será repassado após a liquidação.'}, BADGE.previsto),
       Object.assign({x: 'O valor não utilizado já foi enviado.'}, BADGE.enviado),
+      Object.assign({x: 'O recebível liquidou sem ter sido utilizado em compras e o valor integral foi enviado para sua chave Pix.'}, BADGE.repassado),
+      Object.assign({x: 'O recebível liquidou. Parte pode ter sido usada em compras e parte repassada via Pix.'}, BADGE.liquidado),
       Object.assign({x: 'Não conseguimos concluir o repasse. Revise os dados de destino.'}, BADGE.falha)
     ];
 
     const FILTROS = [
       {k: 'todos', label: 'Todos', fn: () => true},
-      {k: 'usados', label: 'Usados em compras', fn: r => r.usado > 0},
-      {k: 'livres', label: 'Ainda disponíveis', fn: r => livreDe(r) > 0},
-      {k: 'pix', label: 'Repasse via Pix', fn: r => !!pixDe(r) && livreDe(r) > 0}
+      {k: 'limite', label: 'No limite', fn: r => !r.hist && livreDe(r) > 0},
+      {k: 'usados', label: 'Usados', fn: r => r.usado > 0},
+      {k: 'repassados', label: 'Repassados', fn: r => (r.pixValor > 0) || (!r.hist && pixDe(r) === 'enviado' && livreDe(r) > 0)}
     ];
     v.recFiltros = FILTROS.map(fo => ({
       label: fo.label,
@@ -1939,7 +1991,7 @@ class Component extends DCLogic {
       sel: () => this.setState({recFiltro: fo.k})
     }));
     const filtroAtivo = (FILTROS.filter(fo => fo.k === s.recFiltro)[0] || FILTROS[0]).fn;
-    const visiveis = lista.filter(filtroAtivo);
+    const visiveis = todasRec.filter(filtroAtivo);
     v.recFiltroVazio = visiveis.length === 0;
     v.recLista = visiveis.map(r => {
       const livre = livreDe(r);
@@ -1949,6 +2001,13 @@ class Component extends DCLogic {
       let sec2 = '';
       if (livre > 0) sec2 = F(livre) + ' ainda disponíveis';
       else sec2 = 'Totalmente utilizado no EvoluCard.';
+      if (r.hist && r.estado === 'repassado') {
+        sec1 = 'Não utilizado no EvoluCard';
+        sec2 = 'Pix enviado em ' + r.dia + ' ' + r.mes;
+      } else if (r.hist) {
+        sec1 = F(r.usado) + ' usados em compras';
+        sec2 = F(r.pixValor) + ' repassados via Pix';
+      }
       return Object.assign({
         dia: r.dia, mes: r.mes, valor: F(r.valor), origem: r.origem, sec1: sec1, sec2: sec2,
         abrir: () => this.nav({rec: r.id, recCtxTx: null, recSemLiq: false, tela: 'recDetalhe', pilha: ['recebiveis']})
@@ -1956,20 +2015,33 @@ class Component extends DCLogic {
     });
 
     const usadoNaTxRec = (r, id) => r.compras.filter(c => c.tx === id).reduce((x, c) => x + c.valor, 0);
-    const rr = lista.filter(r => r.id === s.rec)[0] || lista[1];
+    const rr = todasRec.filter(r => r.id === s.rec)[0] || lista[1];
     const rrLivre = livreDe(rr);
     const abrirCompra = id => () => this.nav({tx: id, tela: 'transacaoDet', pilha: ['transacoes']});
-    const mapCompra = c => ({nome: nomeTx(c.tx), data: dataTx(c.tx), valor: F(c.valor), abrir: abrirCompra(c.tx)});
+    const mapCompra = c => ({nome: c.nome || nomeTx(c.tx), data: c.data || dataTx(c.tx), valor: F(c.valor), abrir: c.tx ? abrirCompra(c.tx) : null});
     const rb = badgeDe(rr);
     v.rdValor = F(rr.valor);
     v.rdData = rr.longa;
     v.rdOrigem = rr.origem;
     v.rdBt = rb.bt; v.rdBbg = rb.bbg; v.rdBcor = rb.bcor; v.rdBdot = rb.bdot;
     v.rdSemLiq = s.recSemLiq;
+    v.rdHist = !!rr.hist;
+    v.rdDataLabel = rr.hist ? 'Data de liquidação' : 'Liquidação prevista';
+    v.rdLivreLabel = rr.hist ? 'Não utilizado' : 'Ainda não utilizado';
+    v.rdBarLabel = rr.hist ? 'Repassado via Pix' : 'Ainda disponível';
+    v.rdRepassado = !!rr.hist && rr.pixValor > 0;
+    v.rdRepValor = F(rr.pixValor || 0);
+    v.rdRepQuando = rr.pixQuando || '';
+    v.rdAjudaRepasse = rr.hist
+      ? (rr.usado === 0
+        ? 'Este recebível não foi utilizado em compras. Por isso, após a liquidação, o valor integral foi repassado para você via Pix.'
+        : 'Parte deste recebível foi utilizada para liquidar compras no EvoluCard. O valor restante foi repassado para você via Pix após a liquidação.')
+      : '';
+    v.rdVerRepasse = () => this.nav({pixRec: rr.id, tela: 'pixRepasse', pilha: ['recebiveis', 'recDetalhe']});
     v.rdUsado = F(rr.usado);
     v.rdLivre = F(rrLivre);
     v.rdPctUsado = Math.round(rr.usado / rr.valor * 100) + '%';
-    v.rdTemLivre = rrLivre > 0;
+    v.rdTemLivre = rrLivre > 0 && !rr.hist;
     const rpx = pixDe(rr) || 'previsto';
     const rpb = BADGE[rpx] || BADGE.previsto;
     v.rdPt = rpb.bt; v.rdPbg = rpb.bbg; v.rdPcor = rpb.bcor; v.rdPdot = rpb.bdot;
@@ -1983,7 +2055,7 @@ class Component extends DCLogic {
     v.rdCtxValor = s.recCtxTx ? F(usadoNaTxRec(rr, s.recCtxTx)) : '';
     v.rdTotalUsado = F(rr.usado);
     v.rdTemCompras = rr.compras.length > 0;
-    v.rdSemCompras = rr.compras.length === 0;
+    v.rdSemCompras = rr.compras.length === 0 && !rr.hist;
     v.rdMaisCompras = rr.compras.length > 2;
     v.rdCompras = rr.compras.slice(0, 2).map(mapCompra);
     v.rdTodasCompras = rr.compras.map(mapCompra);
@@ -2009,7 +2081,7 @@ class Component extends DCLogic {
     });
 
     // repasse via Pix
-    const pr = lista.filter(r => r.id === s.pixRec)[0] || lista[1];
+    const pr = todasRec.filter(r => r.id === s.pixRec)[0] || lista[1];
     const ppx = pixDe(pr) || 'previsto';
     const pb = BADGE[ppx] || BADGE.previsto;
     v.pxValor = F(livreDe(pr));
