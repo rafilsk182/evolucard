@@ -978,12 +978,28 @@
 </sc-if>
 </sc-if>
 
-<div style="border-radius:14px;background:#0d6e7a;padding:20px 18px;position:relative;overflow:hidden">
-<div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(0,128,171,.16)"></div>
-<div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between"><div><img src="uploads/EvoluCard_Logo.png" alt="EvoluCard" style="display:block;width:124px;height:auto;filter:brightness(0) invert(1)"><div style="font:600 12px/1.3 Inter;color:#fff;margin-top:6px;letter-spacing:.02em">Virtual</div></div><span style="width:34px;height:24px;border-radius:4px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font:600 10px Inter;color:#fff">BAND</span></div>
-<div style="position:relative;font:600 17px/1.3 Inter;color:#fff;letter-spacing:.08em;margin-top:28px">{{ numeroCartao }}</div>
-<div style="position:relative;display:flex;gap:24px;margin-top:14px"><div><div style="font:400 12px/1.2 Inter;color:#8a97a1">VALIDADE</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:2px">{{ validadeTxt }}</div></div><div><div style="font:400 12px/1.2 Inter;color:#8a97a1">CÓDIGO</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:2px">{{ cvvTxt }}</div></div></div>
-<div style="position:relative;margin-top:18px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;background:rgba(255,255,255,.12)"><span style="width:6px;height:6px;border-radius:50%;background:{{ statusDot }}"></span><span style="font:600 12px/1 Inter;color:#fff">{{ statusCartaoTxt }}</span></div>
+<div style="width:100%;max-width:344px;aspect-ratio:1.586;border-radius:16px;background:#0d6e7a;padding:18px;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(13,110,122,.22);display:flex;flex-direction:column;justify-content:space-between">
+<div style="position:absolute;inset:0;background:radial-gradient(120% 100% at 100% 0%, #0f8592 0%, #0d6e7a 46%, #095a64 100%)"></div>
+<div style="position:absolute;right:-72px;top:-96px;width:260px;height:260px;border-radius:50%;border:26px solid rgba(255,255,255,.07)"></div>
+<div style="position:absolute;right:-18px;bottom:-104px;width:240px;height:240px;border-radius:50%;background:rgba(0,128,171,.22)"></div>
+<div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+<img src="uploads/EvoluCard_Logo.png" alt="EvoluCard" style="display:block;width:116px;height:auto;filter:brightness(0) invert(1)">
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+<span style="font:600 11px/1 Inter;color:rgba(255,255,255,.82);letter-spacing:.06em">VIRTUAL</span>
+<span style="width:34px;height:26px;border-radius:5px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font:600 10px Inter;color:#fff">BAND</span>
+</div>
+</div>
+<div style="position:relative;display:flex;align-items:center;gap:12px">
+<span style="width:38px;height:28px;border-radius:5px;background:linear-gradient(135deg,#e8d59a,#c9a94f);flex:none;display:flex;align-items:center;justify-content:center"><span style="width:20px;height:14px;border-radius:2px;border:1px solid rgba(255,255,255,.55)"></span></span>
+<span style="font:600 17px/1.3 Inter;color:#fff;letter-spacing:.08em">{{ numeroCartao }}</span>
+</div>
+<div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+<div style="display:flex;gap:22px">
+<div><div style="font:400 10px/1.2 Inter;color:rgba(255,255,255,.7);letter-spacing:.06em">VALIDADE</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:3px">{{ validadeTxt }}</div></div>
+<div><div style="font:400 10px/1.2 Inter;color:rgba(255,255,255,.7);letter-spacing:.06em">CÓDIGO</div><div style="font:600 13px/1.3 Inter;color:#fff;margin-top:3px">{{ cvvTxt }}</div></div>
+</div>
+<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.14);flex:none"><span style="width:6px;height:6px;border-radius:50%;background:{{ statusDot }}"></span><span style="font:600 11px/1 Inter;color:#fff">{{ statusCartaoTxt }}</span></div>
+</div>
 </div>
 
 <div style="display:flex;gap:8px;margin-top:12px">
@@ -1226,9 +1242,6 @@
 <div style="background:#fff;border:1px solid #d8dee2;border-radius:14px;padding:14px 16px;margin-top:10px">
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><span style="font:400 13px/1.4 Inter;color:#5c6b76">Já repassados via Pix</span><span style="font:600 15px/1.2 Inter;color:#1a2733;flex:none">{{ recJaRepassado }}</span></div>
 <div style="font:400 12px/1.45 Inter;color:#5c6b76;margin-top:6px">Histórico de recebíveis já liquidados. Este valor não faz parte dos recebíveis vinculados hoje.</div>
-<div style="height:1px;background:#eef2f4;margin:12px 0"></div>
-<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px"><span style="font:400 13px/1.4 Inter;color:#5c6b76">Comprometidos em outra instituição</span><span style="font:600 15px/1.2 Inter;color:#1a2733;flex:none">{{ recComprometidos }}</span></div>
-<div style="font:400 12px/1.45 Inter;color:#5c6b76;margin-top:6px">Recebíveis identificados na sua agenda que já estão vinculados a outra operação e não compõem seu limite.</div>
 </div>
 
 <div style="background:#fff;border:1px solid #d8dee2;border-radius:14px;padding:16px;margin-top:12px">
@@ -1244,7 +1257,7 @@
 <button onClick="{{ go.recAjuda }}" style="width:100%;height:48px;border-radius:10px;border:1.5px solid #0d6e7a;background:#fff;color:#0d6e7a;font:600 15px Inter;cursor:pointer;height:44px;font:600 13px Inter;margin-top:16px">Entender melhor</button>
 </div>
 
-<div style="display:flex;gap:6px;overflow-x:auto;margin:18px -16px 0;padding:0 16px 2px">
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0">
 <sc-for list="{{ recFiltros }}" as="fl" hint-placeholder-count="5">
 <button onClick="{{ fl.sel }}" style="height:34px;padding:0 14px;border-radius:999px;border:1px solid {{ fl.borda }};background:{{ fl.bg }};color:{{ fl.cor }};font:600 13px Inter;cursor:pointer;flex:none">{{ fl.label }}</button>
 </sc-for>
@@ -1610,6 +1623,8 @@
 </div>
 </div>
 </sc-if>
+
+
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;taxaMensal&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1.8,&quot;min&quot;:0.5,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;% ao mês&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Parâmetros financeiros&quot;},&quot;mostrarSimulacao&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;},&quot;mostrarWallet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;}}">
@@ -1712,7 +1727,6 @@ const JA_REPASSADO = 2300;
 // recebíveis identificados fora da elegibilidade: comprometidos em outra operação.
 // Não entram em elegíveis, limite máximo, capacidade adicional nem ajuste de limite.
 const REC_COMP = [
-  {id: 'c1', dia: '20', mes: 'SET', longa: '20 de setembro de 2026', valor: 1600, origem: 'Cielo', usado: 0, estado: 'comprometido', comp: true, compras: []}
 ]; // 1.500 + 800, histórico independente do limite atual
 
 const BADGE = {
@@ -2163,7 +2177,6 @@ class Component extends DCLogic {
     v.recDuvidas = [
       {t: 'Por que meus recebíveis aparecem no EvoluCard?', x: 'Eles são usados para calcular e sustentar seu limite de compra.'},
       {t: 'O que acontece se eu não utilizar todo o valor?', x: 'Enquanto o recebível não liquida, o valor continua disponível como limite. Após a liquidação, o que não foi utilizado pode ser enviado para você via Pix.'},
-      {t: 'Por que um recebível aparece como comprometido?', x: 'Ele já está vinculado a outra operação e, por isso, não pode compor seu limite no EvoluCard. Ele continua aparecendo aqui apenas como informação sobre sua agenda.'},
       {t: 'O que significa “Repassado via Pix”?', x: 'Este recebível chegou à data de liquidação e o valor que não foi utilizado no EvoluCard foi enviado para sua chave Pix cadastrada.'},
       {t: 'As datas são sempre as mesmas?', x: 'Não. Cada recebível tem sua própria data prevista de liquidação, e o valor a repassar depende desse processamento.'}
     ];
@@ -2175,7 +2188,6 @@ class Component extends DCLogic {
       Object.assign({x: 'O valor não utilizado já foi enviado.'}, BADGE.enviado),
       Object.assign({x: 'O recebível liquidou sem ter sido utilizado em compras e o valor integral foi enviado para sua chave Pix.'}, BADGE.repassado),
       Object.assign({x: 'O recebível liquidou. Parte pode ter sido usada em compras e parte repassada via Pix.'}, BADGE.liquidado),
-      Object.assign({x: 'O recebível já está vinculado a outra operação e não compõe seu limite no EvoluCard.'}, BADGE.comprometido),
       Object.assign({x: 'Não conseguimos concluir o repasse. Revise os dados de destino.'}, BADGE.falha)
     ];
 
@@ -2183,7 +2195,6 @@ class Component extends DCLogic {
       {k: 'todos', label: 'Todos', fn: () => true},
       {k: 'limite', label: 'No limite', fn: r => !r.hist && !r.comp && livreDe(r) > 0},
       {k: 'usados', label: 'Usados', fn: r => r.usado > 0},
-      {k: 'comprometidos', label: 'Comprometidos', fn: r => !!r.comp},
       {k: 'repassados', label: 'Repassados', fn: r => (r.pixValor > 0) || (!r.hist && !r.comp && pixDe(r) === 'enviado' && livreDe(r) > 0)}
     ];
     v.recFiltros = FILTROS.map(fo => ({
