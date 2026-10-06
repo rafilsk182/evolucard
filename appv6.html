@@ -20,6 +20,8 @@
 (function () {
   var PASS = "evolucard";
   var overlay = document.getElementById("ev-lock");
+  var LOCK_ENABLED = false; // senha liberada temporariamente; mude para true para reativar
+  if (!LOCK_ENABLED) { overlay.style.display = "none"; return; }
   var input = document.getElementById("ev-lock-input");
   var btn = document.getElementById("ev-lock-btn");
   var err = document.getElementById("ev-lock-err");
