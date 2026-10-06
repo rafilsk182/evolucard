@@ -1805,6 +1805,8 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;taxaMensal&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1.8,&quot;min&quot;:0.5,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;% ao mês&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Parâmetros financeiros&quot;},&quot;mostrarSimulacao&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;},&quot;mostrarWallet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;}}">
 const F = n => 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const PULAR_LOGIN = true; // login desabilitado temporariamente; mude para false para reativar
+const TELA_INICIAL = PULAR_LOGIN ? 'limite' : 'splash';
 const META = {
   splash: {h: 'none', dark: true},
   login: {h: 'none'},
@@ -2154,7 +2156,7 @@ const NOTIFS = DIAS.map((p, i) => notifsDoPasso(i));
 
 class Component extends DCLogic {
   state = {
-    tela: 'splash', pilha: [], toast: null, sheet: null, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
+    tela: TELA_INICIAL, pilha: [], toast: null, sheet: null, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
     vw: typeof window !== 'undefined' ? window.innerWidth : 1280,
     authUser: '', authPass: '', authLembrar: false, authErro: false,
     authCodigo: '', codigoErro: false, pocAberto: false,
@@ -2303,7 +2305,7 @@ class Component extends DCLogic {
     v.voltar = this.voltar;
     v.telaAtual = 'Tela: ' + (m.t || s.tela);
     v.reiniciar = () => this.nav({
-      tela: 'splash', pilha: [], toast: null, sheet: null, consentOk: false, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
+      tela: TELA_INICIAL, pilha: [], toast: null, sheet: null, consentOk: false, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
       authUser: '', authPass: '', authCodigo: '', authErro: false, codigoErro: false, pocAberto: false,
       prefLimite: 'aumentar', aumentou: false, bloqueado: false, dadosVisiveis: false,
       fisico: 'naoSolicitado', tx: 'dental', valor: 1800,
