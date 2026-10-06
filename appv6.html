@@ -1807,6 +1807,8 @@
 const F = n => 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 const PULAR_LOGIN = true; // login desabilitado temporariamente; mude para false para reativar
 const TELA_INICIAL = PULAR_LOGIN ? 'limite' : 'splash';
+const TELAS_LOGIN = ['splash', 'authLogin', 'auth2fa', 'authMetodo', 'authSms', 'authTransicao', 'login', 'otp'];
+const eTelaLogin = t => TELAS_LOGIN.indexOf(t) >= 0 || /^ob[A-Z]/.test(t);
 const META = {
   splash: {h: 'none', dark: true},
   login: {h: 'none'},
@@ -2196,7 +2198,10 @@ class Component extends DCLogic {
     if (this.ro) this.ro.disconnect();
   }
   componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.a); }
-  componentDidUpdate(pp, ps) { if (ps && ps.tela !== this.state.tela) this.resetScroll(); }
+  componentDidUpdate(pp, ps) {
+    if (PULAR_LOGIN && eTelaLogin(this.state.tela)) { this.setState({tela: 'limite', pilha: []}); return; }
+    if (ps && ps.tela !== this.state.tela) this.resetScroll();
+  }
 
   ir(t, extra) {
     this.nav(s => Object.assign({
