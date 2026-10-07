@@ -2212,7 +2212,7 @@ class Component extends DCLogic {
     rec: 'r1', recCtxTx: null, recFiltro: 'todos', recEstado: 'ok', recSemLiq: false,
     pixStatus: 'previsto', pixRec: 'r2', pixTipoSel: 'CNPJ', pixCampo: '',
     pixChave: {tipo: 'CNPJ', mask: '••••••4321'},
-    v7Dia: 0, v7Mom: 1, v7Lidas: {}, v7Rec: 'A', v7Aba: 'acomp', v7FiltroAcomp: 'todos', v7Periodo: 'set', v7FiltroRep: 'todos',
+    v7Dia: 0, v7Mom: 0, v7Lidas: {}, v7Rec: 'A', v7Aba: 'acomp', v7FiltroAcomp: 'todos', v7Periodo: 'set', v7FiltroRep: 'todos',
     v7UtilPeriodo: 'set', v7Acc: 0, v7Variante: 'normal', v7SemChave: false, v7Chave: {tipo: 'E-mail', valor: 'financeiro@clinica.example'},
     v7Tipo: 'E-mail', v7Campo: '', v7CampoErro: '', v7Painel: false, v7Cliente: false, v7BarMob: false, v7Carregando: false, v7Digitou: false, v7EventoAberto: null
   };
@@ -2681,7 +2681,7 @@ class Component extends DCLogic {
     v.voltar = this.voltar;
     v.telaAtual = 'Tela: ' + (m.t || s.tela);
     v.reiniciar = () => this.nav({
-      tela: 'splash', pilha: [], toast: null, sheet: null, consentOk: false, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
+      tela: 'splash', pilha: [], v7Dia: 0, v7Mom: 0, toast: null, sheet: null, consentOk: false, simStep: 0, simAberto: false, lidas: {}, comoAberto: false,
       authUser: '', authPass: '', authCodigo: '', authErro: false, codigoErro: false, pocAberto: false,
       prefLimite: 'aumentar', aumentou: false, bloqueado: false, dadosVisiveis: false,
       fisico: 'naoSolicitado', tx: 'dental', valor: 1800,
