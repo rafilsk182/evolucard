@@ -20,7 +20,7 @@
 (function () {
   var PASS = "evolucard";
   var overlay = document.getElementById("ev-lock");
-  var LOCK_ENABLED = false; // senha liberada temporariamente; mude para true para reativar
+  var LOCK_ENABLED = true; // mude para false para liberar o acesso sem senha
   if (!LOCK_ENABLED) { overlay.style.display = "none"; return; }
   var input = document.getElementById("ev-lock-input");
   var btn = document.getElementById("ev-lock-btn");
@@ -1805,7 +1805,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;taxaMensal&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1.8,&quot;min&quot;:0.5,&quot;max&quot;:5,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;% ao mês&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Parâmetros financeiros&quot;},&quot;mostrarSimulacao&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;},&quot;mostrarWallet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Escopo do MVP&quot;}}">
 const F = n => 'R$ ' + Number(n).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-const PULAR_LOGIN = true; // login desabilitado temporariamente; mude para false para reativar
+const PULAR_LOGIN = false; // mude para true para pular as telas de login
 const TELA_INICIAL = PULAR_LOGIN ? 'limite' : 'splash';
 const TELAS_LOGIN = ['splash', 'authLogin', 'auth2fa', 'authMetodo', 'authSms', 'authTransicao', 'login', 'otp'];
 const eTelaLogin = t => TELAS_LOGIN.indexOf(t) >= 0 || /^ob[A-Z]/.test(t);
