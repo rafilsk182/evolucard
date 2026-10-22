@@ -2819,7 +2819,7 @@ class Component extends DCLogic {
   // após a autenticação: sem configuração ativa, escolha do prazo; com configuração, Home
   v8PosLogin(splash) {
     const s = this.state;
-    if (splash && !s.v8Sessao) { this.nav({tela: 'authLogin', pilha: []}); return; }
+    if (splash) { this.nav({tela: 'authLogin', pilha: []}); return; }
     let t = 'obResultado', pilha = [];
     if (s.v8Ativo) t = 'limite';
     else if (s.v8ObEtapa === 'obCondicoesLimite' && s.v8Escolha) { t = 'obCondicoesLimite'; pilha = ['obResultado']; }
